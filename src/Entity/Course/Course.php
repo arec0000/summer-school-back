@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Entity\Entity\Course;
+namespace App\Entity\Course;
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Entity\Feedback\Feedback;
-use App\Entity\Entity\Goals\Goal;
-use App\Entity\Entity\Teachers\Teachers;
-use App\Entity\Entity\User\User;
-use App\Entity\Entity\Applications\applications;
+use App\Entity\Applications\applications;
+use App\Entity\Feedback\Feedback;
+use App\Entity\Goals\Goal;
+use App\Entity\Teachers\Teachers;
+use App\Entity\User\User;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

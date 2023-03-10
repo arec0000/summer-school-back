@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity\Entity\Applications;
+namespace App\Entity\Applications;
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Entity\Course\Course;
-use App\Entity\Entity\User\User;
+use App\Entity\Course\Course;
+use App\Entity\User\User;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\NotBlank;
 

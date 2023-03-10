@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entity\Entity\User;
+namespace App\Entity\User;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Entity\Course\Course;
-use App\Entity\Entity\Feedback\Feedback;
-use App\Entity\Entity\Goals\Goal;
-use App\Entity\Entity\Teachers\Teachers;
-use App\Entity\Entity\Applications\applications;
+use App\Entity\Applications\applications;
+use App\Entity\Course\Course;
+use App\Entity\Feedback\Feedback;
+use App\Entity\Goals\Goal;
+use App\Entity\Teachers\Teachers;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

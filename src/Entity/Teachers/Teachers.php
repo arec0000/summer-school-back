@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Entity\Entity\Teachers;
+namespace App\Entity\Teachers;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Entity\Course\Course;
-use App\Entity\Entity\User\User;
+use App\Entity\Course\Course;
+use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

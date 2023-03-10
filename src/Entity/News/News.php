@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Entity\News;
+namespace App\Entity\News;
 
 use ApiPlatform\Metadata\ApiResource;
 use DateTimeInterface;
