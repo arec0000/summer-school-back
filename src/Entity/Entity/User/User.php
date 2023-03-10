@@ -105,15 +105,6 @@ class User
         return $this->goals;
     }
 
-//    public function addGoal(Goal $goal): self
-//    {
-//        if (!$this->goals->contains($goal)) {
-//            $this->goals->add($goal);
-//            $goal->setUser($this);
-//        }
-//
-//        return $this;
-//    }
     /**
      * @return Collection<int, Feedback>
      */
@@ -121,16 +112,6 @@ class User
     {
         return $this->feedback;
     }
-
-//    public function addFeedback(Feedback $feedback): self
-//    {
-//        if (!$this->feedback->contains($feedback)) {
-//            $this->feedback->add($feedback);
-//            $feedback->setUser($this);
-//        }
-//
-//        return $this;
-//    }
     /**
      * @return Collection<int, Course>
      */
@@ -139,15 +120,6 @@ class User
         return $this->courses;
     }
 
-//    public function addCourse(Course $course): self
-//    {
-//        if (!$this->courses->contains($course)) {
-//            $this->courses->add($course);
-//            $course->addUser($this);
-//        }
-//
-//        return $this;
-//    }
     /**
      * @return Collection<int, Teachers>
      */
@@ -156,33 +128,10 @@ class User
         return $this->teachers;
     }
 
-//    public function addTeacher(Teachers $teacher): self
-//    {
-//        if (!$this->teachers->contains($teacher)) {
-//            $this->teachers->add($teacher);
-//            $teacher->addUser($this);
-//        }
-//
-//        return $this;
-//    }
-
     public function getApplications(): ?applications
     {
         return $this->applications;
     }
-
-//    public function setApplications(applications $applications): self
-//    {
-//        // set the owning side of the relation if necessary
-//        if ($applications->getUser() !== $this) {
-//            $applications->setUser($this);
-//        }
-//
-//        $this->applications = $applications;
-//
-//        return $this;
-//    }
-
 
 }
 

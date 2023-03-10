@@ -78,15 +78,6 @@ class Teachers
         return $this->course;
     }
 
-//    public function addCourse(Course $course): self
-//    {
-//        if (!$this->course->contains($course)) {
-//            $this->course->add($course);
-//        }
-//
-//        return $this;
-//    }
-
     /**
      * @return Collection<int, User>
      */
@@ -94,13 +85,4 @@ class Teachers
     {
         return $this->user;
     }
-
-//    public function addUser(User $user): self
-//    {
-//        if (!$this->user->contains($user)) {
-//            $this->user->add($user);
-//        }
-//
-//        return $this;
-//    }
 }
