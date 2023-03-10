@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Entity\feedback;
+use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Course\Course;
+use App\Entity\User\User;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[ApiResource]
+#[ORM\Entity]
+/** Feedback for course */
+class Feedback
+{
+
+    // Аннотации для того чтобы свойство класса стало атрибутом в бд
+    // для того чтобы создать бд нужно заполнить .envExample параметр DATABASE_URL
+    // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
+    // bin/console d:d:c && bin/console d:s:u --force --dump-sql
+    // развернуть проект можно используя symfony serve -d
+
+    /** @var int|null the Id of feedback */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: "integer", nullable: true )]
+    private ?int $Id = null;
+
+    /** @var string|null text of feedback */
+    #[ORM\Column(type: "text")]
+    #[Assert\NotBlank]
+    private ?string $feedbackText = null;
+
+    #[ORM\ManyToOne(targetEntity: Course::class,inversedBy: 'feedback')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Course $course = null;
+
+    #[ORM\ManyToOne(inversedBy: 'feedback')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    /**
+     * @return string|null
+     */
+    public function getFeedbackText(): ?string
+    {
+        return $this->feedbackText;
+    }
+
+    /**
+     * @param string|null $feedbackText
+     */
+    public function setFeedbackText(?string $feedbackText): void
+    {
+        $this->feedbackText = $feedbackText;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->Id;
+    }
+
+    public function getCourse(): ?Course
+    {
+        return $this->course;
+    }
+
+    public function setCourseId(?Course $course): self
+    {
+        $this->course = $course;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+}
