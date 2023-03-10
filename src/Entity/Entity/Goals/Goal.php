@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Entity\Goals;
+namespace App\Entity\Entity\Goals;
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Course\Course;
-use App\Entity\User\User;
-use Doctrine\ORM\Mapping  as ORM;
+use App\Entity\Entity\Course\Course;
+use App\Entity\Entity\User\User;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
@@ -13,17 +13,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Goal
 {
-    // Аннотации для того чтобы свойство класса стало атрибутом в бд
-    // для того чтобы создать бд нужно заполнить .envExample параметр DATABASE_URL
-    // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
-    // bin/console d:d:c && bin/console d:s:u --force --dump-sql
-    // развернуть проект можно используя symfony serve -d
 
-    /** @var int|null the Id of goal */
+    /** @var int|null the id of goal */
     #[ORM\Id]
     #[ORM\Column(type: "integer", nullable: true)]
     #[ORM\GeneratedValue(strategy: "AUTO")]
-    private ?int $Id = null;
+    private ?int $id = null;
 
     #[ORM\Column(type: "text")]
     #[Assert\NotBlank]
@@ -32,7 +27,6 @@ class Goal
 
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'Goals')]
     #[ORM\JoinColumn(nullable: false)]
-
     private ?Course $course = null;
 
     #[ORM\ManyToOne(inversedBy: 'goals')]
@@ -44,7 +38,7 @@ class Goal
      */
     public function getId(): ?int
     {
-        return $this->Id;
+        return $this->id;
     }
 
     /** @var string|null The text of goal */
@@ -71,24 +65,23 @@ class Goal
         return $this->course;
     }
 
-    public function setCourseId(?Course $course): self
-    {
-        $this->course = $course;
-
-        return $this;
-    }
+//    public function setCourse(?Course $course): self
+//    {
+//        $this->course = $course;
+//
+//        return $this;
+//    }
 
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
+//    public function setUser(?User $user): self
+//    {
+//        $this->user = $user;
+//
+//        return $this;
+//    }
 
 }

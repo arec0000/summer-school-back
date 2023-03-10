@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Entity\User;
+namespace App\Entity\Entity\User;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Course\Course;
-use App\Entity\Feedback\Feedback;
-use App\Entity\Goals\Goal;
-use App\Entity\Teachers\Teachers;
+use App\Entity\Entity\Course\Course;
+use App\Entity\Entity\Feedback\Feedback;
+use App\Entity\Entity\Goals\Goal;
+use App\Entity\Entity\Teachers\Teachers;
+use App\Entity\Entity\Applications\applications;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,18 +40,18 @@ class User
     #[ORM\GeneratedValue(strategy: "AUTO")]
     protected int $id;
 
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: "string",length: 255)]
     public string $name;
 
     // обязательные поля в базе данных, и соответственно необходимые поля для создания пишутся так.
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: "string",length: 255)]
     public string $surname;
 
     // необязательные поля, зануляются по умолчанию в бд и в коде вот так.
-    #[ORM\Column(type: "string", nullable: true)]
+    #[ORM\Column(type: "string",length: 255, nullable: true)]
     public ?string $patronymic = null;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(type: "integer",length: 10, nullable: true)]
     public ?int $age = null;
 
     #[ORM\Column(type: "string", nullable: true)]
@@ -59,7 +60,7 @@ class User
     #[ORM\Column(type: "string", nullable: true)]
     public ?string $phone = null;
 
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: "string",)]
     private string $password;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Goal::class)]
@@ -73,6 +74,9 @@ class User
 
     #[ORM\ManyToMany(targetEntity: Teachers::class, mappedBy: 'user')]
     private Collection $teachers;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?applications $applications = null;
 
     // TODO добавить поле role, когда будет таска на авторизацию
 
@@ -101,15 +105,15 @@ class User
         return $this->goals;
     }
 
-    public function addGoal(Goal $goal): self
-    {
-        if (!$this->goals->contains($goal)) {
-            $this->goals->add($goal);
-            $goal->setUser($this);
-        }
-
-        return $this;
-    }
+//    public function addGoal(Goal $goal): self
+//    {
+//        if (!$this->goals->contains($goal)) {
+//            $this->goals->add($goal);
+//            $goal->setUser($this);
+//        }
+//
+//        return $this;
+//    }
     /**
      * @return Collection<int, Feedback>
      */
@@ -118,15 +122,15 @@ class User
         return $this->feedback;
     }
 
-    public function addFeedback(Feedback $feedback): self
-    {
-        if (!$this->feedback->contains($feedback)) {
-            $this->feedback->add($feedback);
-            $feedback->setUser($this);
-        }
-
-        return $this;
-    }
+//    public function addFeedback(Feedback $feedback): self
+//    {
+//        if (!$this->feedback->contains($feedback)) {
+//            $this->feedback->add($feedback);
+//            $feedback->setUser($this);
+//        }
+//
+//        return $this;
+//    }
     /**
      * @return Collection<int, Course>
      */
@@ -135,15 +139,15 @@ class User
         return $this->courses;
     }
 
-    public function addCourse(Course $course): self
-    {
-        if (!$this->courses->contains($course)) {
-            $this->courses->add($course);
-            $course->addUser($this);
-        }
-
-        return $this;
-    }
+//    public function addCourse(Course $course): self
+//    {
+//        if (!$this->courses->contains($course)) {
+//            $this->courses->add($course);
+//            $course->addUser($this);
+//        }
+//
+//        return $this;
+//    }
     /**
      * @return Collection<int, Teachers>
      */
@@ -152,15 +156,33 @@ class User
         return $this->teachers;
     }
 
-    public function addTeacher(Teachers $teacher): self
-    {
-        if (!$this->teachers->contains($teacher)) {
-            $this->teachers->add($teacher);
-            $teacher->addUser($this);
-        }
+//    public function addTeacher(Teachers $teacher): self
+//    {
+//        if (!$this->teachers->contains($teacher)) {
+//            $this->teachers->add($teacher);
+//            $teacher->addUser($this);
+//        }
+//
+//        return $this;
+//    }
 
-        return $this;
+    public function getApplications(): ?applications
+    {
+        return $this->applications;
     }
+
+//    public function setApplications(applications $applications): self
+//    {
+//        // set the owning side of the relation if necessary
+//        if ($applications->getUser() !== $this) {
+//            $applications->setUser($this);
+//        }
+//
+//        $this->applications = $applications;
+//
+//        return $this;
+//    }
 
 
 }
+

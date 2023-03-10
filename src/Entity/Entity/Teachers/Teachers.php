@@ -1,41 +1,41 @@
 <?php
 
-namespace App\Entity\Teachers;
+namespace App\Entity\Entity\Teachers;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Course\Course;
-use App\Entity\User\User;
+use App\Entity\Entity\Course\Course;
+use App\Entity\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity]
 class Teachers
 {
-    // Аннотации для того чтобы свойство класса стало атрибутом в бд
-    // для того чтобы создать бд нужно заполнить .envExample параметр DATABASE_URL
-    // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
-    // bin/console d:d:c && bin/console d:s:u --force --dump-sql
-    // развернуть проект можно используя symfony serve -d
 
-    /** @var int|null The Id for teachers */
+    public function __construct()
+    {
+        $this->course = new ArrayCollection();
+        $this->user = new ArrayCollection();
+    }
+
+    /** @var int|null The id for teachers */
     #[ORM\Id]
     #[ORM\Column(type: "integer", nullable: true)]
     #[ORM\GeneratedValue(strategy: "AUTO")]
-    private ?int $Id = null;
+    private ?int $id = null;
 
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: "string",length: 255)]
     public string $name;
 
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: "string",length: 255)]
     public string $surname;
 
-    #[ORM\Column(type: "string", nullable: true)]
+    #[ORM\Column(type: "string",length: 255,nullable: true)]
     public ?string $patronymic = null;
 
-    #[ORM\Column(type: "integer", nullable: true)]
+    #[ORM\Column(type: "integer",length: 10 ,nullable: true)]
     public ?int $age = null;
 
     #[ORM\Column(type: "string", nullable: true)]
@@ -59,7 +59,7 @@ class Teachers
      */
     public function getId(): ?int
     {
-        return $this->Id;
+        return $this->id;
     }
 
     /**
@@ -70,13 +70,6 @@ class Teachers
         return $this->password;
     }
 
-    public function __construct()
-    {
-        $this->course = new ArrayCollection();
-        $this->user = new ArrayCollection();
-    }
-
-
     /**
      * @return Collection<int, Course>
      */
@@ -85,14 +78,14 @@ class Teachers
         return $this->course;
     }
 
-    public function addCourseId(Course $course): self
-    {
-        if (!$this->course->contains($course)) {
-            $this->course->add($course);
-        }
-
-        return $this;
-    }
+//    public function addCourse(Course $course): self
+//    {
+//        if (!$this->course->contains($course)) {
+//            $this->course->add($course);
+//        }
+//
+//        return $this;
+//    }
 
     /**
      * @return Collection<int, User>
@@ -102,12 +95,12 @@ class Teachers
         return $this->user;
     }
 
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
-        }
-
-        return $this;
-    }
+//    public function addUser(User $user): self
+//    {
+//        if (!$this->user->contains($user)) {
+//            $this->user->add($user);
+//        }
+//
+//        return $this;
+//    }
 }
