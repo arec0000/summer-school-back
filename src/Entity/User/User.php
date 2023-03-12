@@ -52,6 +52,7 @@ class User
     public ?string $patronymic = null;
 
     #[ORM\Column(type: "integer",length: 10, nullable: true)]
+
     public ?int $age = null;
 
     #[ORM\Column(type: "string", nullable: true)]
@@ -134,4 +135,3 @@ class User
     }
 
 }
-
