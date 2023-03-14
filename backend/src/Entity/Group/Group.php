@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource]
 #[ORM\Entity]
 class Group
+
 {
     #[ORM\Id]
     #[ORM\Column(type: "integer")]
