@@ -31,6 +31,14 @@ class applications
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->Id;
+    }
+
     public function getCourse(): ?Course
     {
         return $this->course;
@@ -53,14 +61,6 @@ class applications
         $this->user = $user;
 
         return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-        return $this->Id;
     }
 
     /**

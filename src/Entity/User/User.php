@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     // Аннотации для того чтобы свойство класса стало атрибутом в бд
-    // для того чтобы создать бд нужно заполнить .envExample параметр DATABASE_URL
+    // для того чтобы создать бд нужно заполнить .env параметр DATABASE_URL
     // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
     // bin/console d:d:c && bin/console d:s:u --force --dump-sql
     // развернуть проект можно используя symfony serve -d
@@ -33,7 +33,6 @@ class User
         $this->feedback = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->teachers = new ArrayCollection();
-        $this->teathersLessons = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -201,6 +200,8 @@ class User
     {
         return $this->goals;
     }
+// строки ниже законспектированны для того чтобы программа работала корректно, но сами функции я сохранил на всякий случай
+// и во всех последующих моделях ситуация аналогичная
 
 //    public function addGoal(Goal $goal): self
 //    {

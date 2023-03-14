@@ -12,13 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /** Feedback for course */
 class Feedback
 {
-
-    // Аннотации для того чтобы свойство класса стало атрибутом в бд
-    // для того чтобы создать бд нужно заполнить .envExample параметр DATABASE_URL
-    // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
-    // bin/console d:d:c && bin/console d:s:u --force --dump-sql
-    // развернуть проект можно используя symfony serve -d
-
     /** @var int|null the Id of feedback */
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]

@@ -20,14 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource]
 class Course
 {
-
-
-    // Аннотации для того чтобы свойство класса стало атрибутом в бд
-    // для того чтобы создать бд нужно заполнить .envExample параметр DATABASE_URL
-    // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
-    // bin/console d:d:c && bin/console d:s:u --force --dump-sql
-    // развернуть проект можно используя symfony serve -d
-
     public function __construct()
     {
         $this->goals = new ArrayCollection();
