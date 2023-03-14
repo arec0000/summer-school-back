@@ -2,7 +2,6 @@
 
 namespace App\Entity\Lesson;
 use App\Entity\pack\pack;
-use Cassandra\Date;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,14 +28,14 @@ class lesson
     #[ORM\Column(type: "string", length: 255)]
     private ?string $topic = null;
 
-    #[ORM\Column(type: "date")]
+    #[ORM\Column(type: "datetime")]
     #[Assert\NotBlank]
     private ?DateTimeInterface $date = null;
 
-    #[ORM\Column(type: "time", nullable: true)]
+    #[ORM\Column(type: "datetime", nullable: true)]
     private ?DateTimeInterface $start_time = null;
 
-    #[ORM\Column(type: "time", nullable: true)]
+    #[ORM\Column(type: "datetime", nullable: true)]
     private ?DateTimeInterface $end_time = null;
 
     #[ORM\ManyToOne(inversedBy: 'lessons')]

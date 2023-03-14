@@ -12,11 +12,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 /** Feedback for course */
 class Feedback
 {
+
+    // Аннотации для того чтобы свойство класса стало атрибутом в бд
+    // для того чтобы создать бд нужно заполнить .envExample параметр DATABASE_URL
+    // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
+    // bin/console d:d:c && bin/console d:s:u --force --dump-sql
+    // развернуть проект можно используя symfony serve -d
+
     /** @var int|null the Id of feedback */
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
     #[ORM\Column(type: "integer", nullable: true )]
-    private ?int $id = null;
+    private ?int $Id = null;
 
     /** @var string|null text */
     #[ORM\Column(type: "text")]
@@ -34,6 +41,7 @@ class Feedback
     /**
      * @return string|null
      */
+
     public function getFeedbackText(): ?string
     {
         return $this->feedbackText;
@@ -52,7 +60,7 @@ class Feedback
      */
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->Id;
     }
 
     public function getCourse(): ?Course
@@ -60,10 +68,22 @@ class Feedback
         return $this->course;
     }
 
+    public function setCourse(?Course $course): self
+    {
+        $this->course = $course;
+
+        return $this;
+    }
 
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

@@ -36,9 +36,48 @@ class applications
         return $this->course;
     }
 
+    public function setCourse(Course $course): self
+    {
+        $this->course = $course;
+
+        return $this;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
     }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->Id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string|null $status
+     */
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
+    }
+
 
 }

@@ -13,6 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Goal
 {
+    // Аннотации для того чтобы свойство класса стало атрибутом в бд
+    // для того чтобы создать бд нужно заполнить .envExample параметр DATABASE_URL
+    // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
+    // bin/console d:d:c && bin/console d:s:u --force --dump-sql
+    // развернуть проект можно используя symfony serve -d
 
     /** @var int|null the id of goal */
     #[ORM\Id]
@@ -65,9 +70,23 @@ class Goal
         return $this->course;
     }
 
+    public function setCourse(?Course $course): self
+    {
+        $this->course = $course;
+
+        return $this;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
 }

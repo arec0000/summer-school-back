@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Teachers
 {
-
     public function __construct()
     {
         $this->course = new ArrayCollection();
@@ -44,9 +43,6 @@ class Teachers
     #[ORM\Column(type: "string", nullable: true)]
     public ?string $phone = null;
 
-    #[ORM\Column(type: "string")]
-    private string $password;
-
     #[ORM\ManyToMany(targetEntity: Course::class, inversedBy: 'teachers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Collection $course = null;
@@ -65,11 +61,102 @@ class Teachers
     /**
      * @return string
      */
-    public function getPassword(): string
+    public function getName(): string
     {
-        return $this->password;
+        return $this->name;
     }
 
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param string $surname
+     */
+    public function setSurname(string $surname): void
+    {
+        $this->surname = $surname;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPatronymic(): ?string
+    {
+        return $this->patronymic;
+    }
+
+    /**
+     * @param string|null $patronymic
+     */
+    public function setPatronymic(?string $patronymic): void
+    {
+        $this->patronymic = $patronymic;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    /**
+     * @param int|null $age
+     */
+    public function setAge(?int $age): void
+    {
+        $this->age = $age;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string|null $email
+     */
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string|null $phone
+     */
+    public function setPhone(?string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return string
+     */
     /**
      * @return Collection<int, Course>
      */
@@ -78,6 +165,15 @@ class Teachers
         return $this->course;
     }
 
+//    public function addCourse(Course $course): self
+//    {
+//        if (!$this->course->contains($course)) {
+//            $this->course->add($course);
+//        }
+//
+//        return $this;
+//    }
+
     /**
      * @return Collection<int, User>
      */
@@ -85,4 +181,14 @@ class Teachers
     {
         return $this->user;
     }
+
+//    public function addUser(User $user): self
+//    {
+//        if (!$this->user->contains($user)) {
+//            $this->user->add($user);
+//        }
+//
+//        return $this;
+//    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity\pack;
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Course\Course;
 use App\Entity\Lesson\lesson;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -29,6 +30,10 @@ class pack
 
     #[ORM\OneToMany(mappedBy: 'pack', targetEntity: lesson::class)]
     private Collection $lessons;
+
+    #[ORM\ManyToOne(inversedBy: 'pack')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Course $course = null;
 
     public function __construct()
     {
@@ -92,6 +97,18 @@ class pack
 //
 //        return $this;
 //    }
+
+public function getCourse(): ?Course
+{
+    return $this->course;
+}
+
+public function setCourse(?Course $course): self
+{
+    $this->course = $course;
+
+    return $this;
+}
 
 
 

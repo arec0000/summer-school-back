@@ -5,6 +5,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Applications\applications;
 use App\Entity\Feedback\Feedback;
 use App\Entity\Goals\Goal;
+use App\Entity\Pack\pack;
 use App\Entity\Teachers\Teachers;
 use App\Entity\User\User;
 use DateTimeInterface;
@@ -20,12 +21,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Course
 {
 
+
+    // Аннотации для того чтобы свойство класса стало атрибутом в бд
+    // для того чтобы создать бд нужно заполнить .envExample параметр DATABASE_URL
+    // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
+    // bin/console d:d:c && bin/console d:s:u --force --dump-sql
+    // развернуть проект можно используя symfony serve -d
+
     public function __construct()
     {
         $this->goals = new ArrayCollection();
         $this->feedback = new ArrayCollection();
         $this->teachers = new ArrayCollection();
         $this->user = new ArrayCollection();
+        $this->pack = new ArrayCollection();
     }
 
     /**
@@ -34,7 +43,7 @@ class Course
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
     #[ORM\Column(type: "integer", nullable: true)]
-    private ?int $Id = null;
+    private ?int $id = null;
 
     /**
      * @var string|null The title of course
@@ -60,6 +69,7 @@ class Course
     private ?int $studentCapacity = null;
 
 
+    /** @var DateTimeInterface|null Star Date of course */
     #[ORM\Column(type: "datetime")]
     #[Assert\NotBlank]
     private ?DateTimeInterface $startTime = null;
@@ -84,10 +94,13 @@ class Course
     #[ORM\OneToOne(mappedBy: 'course', cascade: ['persist', 'remove'])]
     private ?applications $applications = null;
 
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: pack::class)]
+    private Collection $pack;
+
     /** @return int|null */
     public function getId(): ?int
     {
-        return $this->Id;
+        return $this->id;
     }
 
     /**
@@ -158,12 +171,38 @@ class Course
         $this->duration = $duration;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getThumbnail(): ?string
+    {
+        return $this->thumbnail;
+    }
+
+    /**
+     * @param string|null $thumbnail
+     */
+    public function setThumbnail(?string $thumbnail): void
+    {
+        $this->thumbnail = $thumbnail;
+    }
+
+
     /** @return Collection<int, Goal> */
     public function getGoals(): Collection
     {
         return $this->goals;
     }
 
+//    public function addGoal(Goal $goal): self
+//    {
+//        if (!$this->goals->contains($goal)) {
+//            $this->goals->add($goal);
+//            $goal->setCourse($this);
+//        }
+//
+//        return $this;
+//    }
 
     /** @return Collection<int, Feedback> */
     public function getFeedback(): Collection
@@ -171,6 +210,15 @@ class Course
         return $this->feedback;
     }
 
+//    public function addFeedback(Feedback $feedback): self
+//    {
+//        if (!$this->feedback->contains($feedback)) {
+//            $this->feedback->add($feedback);
+//            $feedback->setCourse($this);
+//        }
+//
+//        return $this;
+//    }
 
     /** @return Collection<int, Teachers> */
     public function getTeachers(): Collection
@@ -178,14 +226,66 @@ class Course
         return $this->teachers;
     }
 
+//    public function addTeacher(Teachers $teacher): self
+//    {
+//        if (!$this->teachers->contains($teacher)) {
+//            $this->teachers->add($teacher);
+//            $teacher->addCourse($this);
+//        }
+//
+//        return $this;
+//    }
+
     /** @return Collection<int, User> */
     public function getUser(): Collection
     {
         return $this->user;
     }
 
+//    public function addUser(User $user): self
+//    {
+//        if (!$this->user->contains($user)) {
+//            $this->user->add($user);
+//        }
+//
+//        return $this;
+//    }
+
     public function getApplications(): ?applications
     {
         return $this->applications;
     }
+
+//    public function setApplications(applications $applications): self
+//    {
+//        // set the owning side of the relation if necessary
+//        if ($applications->getCourse() !== $this) {
+//            $applications->setCourse($this);
+//        }
+//
+//        $this->applications = $applications;
+//
+//        return $this;
+//    }
+
+//}
+
+/**
+ * @return Collection<int, pack>
+ */
+public function getPack(): Collection
+{
+    return $this->pack;
+}
+
+//public function addPack(pack $pack): self
+//{
+//    if (!$this->pack->contains($pack)) {
+//        $this->pack->add($pack);
+//        $pack->setCourse($this);
+//    }
+//
+//    return $this;
+//}
+
 }
