@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface as PasswordAuthenticatedUserInterfaceAlias;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 //Аннотации для того чтобы сущность появилась в swagger и также была таблицей в бд
@@ -67,6 +68,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
     public ?int $age = null;
 
     #[ORM\Column(type: "string", unique: true)]
+    #[Assert\Email(
+        message: 'Email {{ value }} не является валидным email.',
+    )]
     public ?string $email = null;
 
     #[ORM\Column(type: "string", nullable: true)]
@@ -89,8 +93,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?applications $applications = null;
-    #[ORM\Column(type: "string") ]
-    private array $roles = ["user"];
+    #[ORM\Column(type: "array") ]
+    private array $roles = ["ROLE_USER","ROLE_ADMIN"];
 
     // TODO добавить поле role, когда будет таска на авторизацию
 
