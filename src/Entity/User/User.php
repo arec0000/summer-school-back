@@ -89,8 +89,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?applications $applications = null;
-    #[ORM\Column(type: "string", length: 255)]
-    private array $roles ;
+    #[ORM\Column(type: "string") ]
+    private array $roles = ["user"];
 
     // TODO добавить поле role, когда будет таска на авторизацию
 

@@ -38,7 +38,6 @@ class RegistrationUserController extends AbstractController
         $this->entityManager->flush();
 
     }
-
 //    public function  registration (UserPasswordHasherInterface $passwordHasher)
 //    {
 //
