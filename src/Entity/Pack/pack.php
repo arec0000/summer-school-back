@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\pack;
+namespace App\Entity\Pack;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Course\Course;
 use App\Entity\Lesson\lesson;

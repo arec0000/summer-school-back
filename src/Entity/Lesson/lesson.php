@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity\Lesson;
-use App\Entity\pack\pack;
+use App\Entity\Pack\pack;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;

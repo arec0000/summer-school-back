@@ -33,5 +33,5 @@ services:
         resource: '../src/Controller/'
         tags: [ 'controller.service_arguments' ]
 
-    App\Services\User\UserRegistrareService:
+    App\Services\User\UserRegistrationService:
         autowire: true

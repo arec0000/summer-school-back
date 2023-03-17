@@ -258,7 +258,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
         // TODO: Implement getUserIdentifier() method.
         return $this->id;
     }
-
 }
 
 

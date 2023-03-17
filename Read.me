@@ -1,0 +1,6 @@
+Система OAuth 2  принимает в качестве username  email юзера, так как он уникальный для каждого юзера. Чтобы изменить этот пункт
+надо пройти в security.yaml найти пункты     providers:                 и заменить property  на желаемый уникальный username .
+                                                 database_user:
+                                                     entity:
+                                                         class: '\App\Entity\User\User'
+                                                         property: 'email'

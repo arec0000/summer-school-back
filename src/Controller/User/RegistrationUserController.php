@@ -14,11 +14,12 @@ class RegistrationUserController extends AbstractController
 {
     public function __construct
     (
-        private EntityManagerInterface  $entityManager,
-        private ValidatorInterface      $validator,
-        private UserRegistrationService $userRegistrationService
+        private  EntityManagerInterface $entityManager,
+        private  ValidatorInterface     $validator,
+        private  UserRegistrationService  $userRegistrationService
     )
     {
+
     }
     public function __invoke(User $user, Request $request, ValidatorInterface $validator): void
 
@@ -27,11 +28,8 @@ class RegistrationUserController extends AbstractController
         // как аргумент в invoke всегда передается request
         // валидация данных
         $this->validator->validate($user);
-
-
-        $hashPassword = $this->userRegistrationService->hashPassword($user->getPassword(), $user);
+        $hashPassword = $this->userRegistrationService->hashPassword($user, $user->getPassword());
         $user->setPassword($hashPassword);
-
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 

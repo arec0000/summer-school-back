@@ -9,7 +9,6 @@ security:
         database_user:
             entity:
                 class: '\App\Entity\User\User'
-
                 property: 'email'
 
     firewalls:
