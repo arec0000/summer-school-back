@@ -35,3 +35,5 @@ services:
 
     App\Services\User\UserRegistrationService:
         autowire: true
+    App\Entity\User\User: ~
+

@@ -22,9 +22,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
     new Post
-    (uriTemplate:'/user/register',
-    controller: RegistrationUserController::class,
-    name: "RegistrationUser")
+    (uriTemplate: '/user/register',
+        controller: RegistrationUserController::class,
+        deserialize: false,
+        name: "RegistrationUser")
         ]
 )]
 #[ORM\Entity]
@@ -40,12 +41,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
     // id, dateCreate, dateUpdate
 
 
-    public function __construct()
+    public function __construct(string $password)
     {
         $this->goals = new ArrayCollection();
         $this->feedback = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->teachers = new ArrayCollection();
+        $this->password = $password;
     }
 
     #[ORM\Id]

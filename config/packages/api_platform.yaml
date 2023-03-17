@@ -16,7 +16,7 @@ api_platform:
     flow: 'password'
 
     # The OAuth token url.
-    tokenUrl: '/oauth/v2/token'
+    tokenUrl: '/token'
 
     # The OAuth authentication url.
     authorizationUrl: '/oauth/v2/auth'

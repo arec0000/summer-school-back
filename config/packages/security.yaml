@@ -13,7 +13,7 @@ security:
 
     firewalls:
         api_token:
-            pattern: auth/v2/token
+            pattern: ^/api/token$
             security: false
 
             # activate different ways to authenticate
