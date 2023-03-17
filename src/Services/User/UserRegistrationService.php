@@ -8,13 +8,13 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 class UserRegistrationService
 {
     public function __construct(
-        private UserPasswordHasherInterface $hasher)
+        private  UserPasswordHasherInterface $hashed )
     {
 
     }
 
     public function hashPassword( PasswordAuthenticatedUserInterface $user, string $password): string
     {
-        return  $this->hasher->hashPassword($user, $password);
+        return  $this->hashed->hashPassword($user, $password);
     }
 }

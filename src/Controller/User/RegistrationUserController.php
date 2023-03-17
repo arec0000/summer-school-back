@@ -2,7 +2,6 @@
 
 namespace App\Controller\User;
 
-use Symfony\Component\HttpFoundation\Response;
 use ApiPlatform\Validator\ValidatorInterface;
 use App\Entity\User\User;
 use App\Services\User\UserRegistrationService;
@@ -14,9 +13,9 @@ class RegistrationUserController extends AbstractController
 {
     public function __construct
     (
-        private  EntityManagerInterface $entityManager,
-        private  ValidatorInterface     $validator,
-        private  UserRegistrationService  $userRegistrationService
+        private EntityManagerInterface $entityManager,
+        private ValidatorInterface     $validator,
+        private UserRegistrationService $userRegistrationService
     )
     {
 
