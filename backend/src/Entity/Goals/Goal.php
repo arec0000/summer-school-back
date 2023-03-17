@@ -65,9 +65,23 @@ class Goal
         return $this->course;
     }
 
+    public function setCourse(?Course $course): self
+    {
+        $this->course = $course;
+
+        return $this;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
 }

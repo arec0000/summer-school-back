@@ -16,7 +16,7 @@ class Feedback
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
     #[ORM\Column(type: "integer", nullable: true )]
-    private ?int $id = null;
+    private ?int $Id = null;
 
     /** @var string|null text */
     #[ORM\Column(type: "text")]
@@ -34,6 +34,7 @@ class Feedback
     /**
      * @return string|null
      */
+
     public function getFeedbackText(): ?string
     {
         return $this->feedbackText;
@@ -52,7 +53,7 @@ class Feedback
      */
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->Id;
     }
 
     public function getCourse(): ?Course
@@ -60,10 +61,22 @@ class Feedback
         return $this->course;
     }
 
+    public function setCourse(?Course $course): self
+    {
+        $this->course = $course;
+
+        return $this;
+    }
 
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Entity\Lessons;
-
-use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Group\group;
+namespace App\Entity\Lesson;
+use App\Entity\pack\pack;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
 #[ORM\Entity]
-class Lesson
+class lesson
 {
-
     #[ORM\Id]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: "integer",nullable: true)]
     #[ORM\GeneratedValue(strategy: "AUTO")]
     private ?int $id = null;
 
@@ -31,17 +30,26 @@ class Lesson
 
     #[ORM\Column(type: "datetime")]
     #[Assert\NotBlank]
-    private ?\DateTimeInterface $date = null;
+    private ?DateTimeInterface $date = null;
 
-    #[ORM\Column(type: "string", nullable: true)]
-    private ?string $start_time = null;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?DateTimeInterface $start_time = null;
 
-    #[ORM\Column(type: "string", nullable: true)]
-    private ?string $end_time = null;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?DateTimeInterface $end_time = null;
 
     #[ORM\ManyToOne(inversedBy: 'lessons')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?group $group = null;
+    private ?pack $pack = null;
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
 
     /**
      * @return string|null
@@ -92,69 +100,61 @@ class Lesson
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
     /**
-     * @param \DateTimeInterface|null $date
+     * @param DateTimeInterface|null $date
      */
-    public function setDate(?\DateTimeInterface $date): void
+    public function setDate(?DateTimeInterface $date): void
     {
         $this->date = $date;
     }
 
     /**
-     * @return string|null
+     * @return DateTimeInterface|null
      */
-    public function getStartTime(): ?string
+    public function getStartTime(): ?DateTimeInterface
     {
         return $this->start_time;
     }
 
     /**
-     * @param string|null $start_time
+     * @param DateTimeInterface|null $start_time
      */
-    public function setStartTime(?string $start_time): void
+    public function setStartTime(?DateTimeInterface $start_time): void
     {
         $this->start_time = $start_time;
     }
 
     /**
-     * @return string|null
+     * @return DateTimeInterface|null
      */
-    public function getEndTime(): ?string
+    public function getEndTime(): ?DateTimeInterface
     {
         return $this->end_time;
     }
 
     /**
-     * @param string|null $end_time
+     * @param DateTimeInterface|null $end_time
      */
-    public function setEndTime(?string $end_time): void
+    public function setEndTime(?DateTimeInterface $end_time): void
     {
         $this->end_time = $end_time;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
+    public function getPack(): ?pack
     {
-        return $this->id;
+        return $this->pack;
     }
 
-    public function getBand(): ?group
+    public function setPack(?pack $pack): self
     {
-        return $this->group;
-    }
-
-    public function setBand(?group $group): self
-    {
-        $this->group = $group;
+        $this->pack = $pack;
 
         return $this;
     }

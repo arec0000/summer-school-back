@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     // Аннотации для того чтобы свойство класса стало атрибутом в бд
-    // для того чтобы создать бд нужно заполнить .envExample параметр DATABASE_URL
+    // для того чтобы создать бд нужно заполнить .env параметр DATABASE_URL
     // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
     // bin/console d:d:c && bin/console d:s:u --force --dump-sql
     // развернуть проект можно используя symfony serve -d
@@ -52,7 +52,6 @@ class User
     public ?string $patronymic = null;
 
     #[ORM\Column(type: "integer",length: 10, nullable: true)]
-
     public ?int $age = null;
 
     #[ORM\Column(type: "string", nullable: true)]
@@ -99,13 +98,120 @@ class User
     }
 
     /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param string $surname
+     */
+    public function setSurname(string $surname): void
+    {
+        $this->surname = $surname;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPatronymic(): ?string
+    {
+        return $this->patronymic;
+    }
+
+    /**
+     * @param string|null $patronymic
+     */
+    public function setPatronymic(?string $patronymic): void
+    {
+        $this->patronymic = $patronymic;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    /**
+     * @param int|null $age
+     */
+    public function setAge(?int $age): void
+    {
+        $this->age = $age;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string|null $email
+     */
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string|null $phone
+     */
+    public function setPhone(?string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
      * @return Collection<int, Goal>
      */
     public function getGoals(): Collection
     {
         return $this->goals;
     }
+// строки ниже законспектированны для того чтобы программа работала корректно, но сами функции я сохранил на всякий случай
+// и во всех последующих моделях ситуация аналогичная
 
+//    public function addGoal(Goal $goal): self
+//    {
+//        if (!$this->goals->contains($goal)) {
+//            $this->goals->add($goal);
+//            $goal->setUser($this);
+//        }
+//
+//        return $this;
+//    }
     /**
      * @return Collection<int, Feedback>
      */
@@ -113,6 +219,16 @@ class User
     {
         return $this->feedback;
     }
+
+//    public function addFeedback(Feedback $feedback): self
+//    {
+//        if (!$this->feedback->contains($feedback)) {
+//            $this->feedback->add($feedback);
+//            $feedback->setUser($this);
+//        }
+//
+//        return $this;
+//    }
     /**
      * @return Collection<int, Course>
      */
@@ -121,6 +237,15 @@ class User
         return $this->courses;
     }
 
+//    public function addCourse(Course $course): self
+//    {
+//        if (!$this->courses->contains($course)) {
+//            $this->courses->add($course);
+//            $course->addUser($this);
+//        }
+//
+//        return $this;
+//    }
     /**
      * @return Collection<int, Teachers>
      */
@@ -129,9 +254,32 @@ class User
         return $this->teachers;
     }
 
+//    public function addTeacher(Teachers $teacher): self
+//    {
+//        if (!$this->teachers->contains($teacher)) {
+//            $this->teachers->add($teacher);
+//            $teacher->addUser($this);
+//        }
+//
+//        return $this;
+//    }
+
     public function getApplications(): ?applications
     {
         return $this->applications;
     }
 
+//    public function setApplications(applications $applications): self
+//    {
+//        // set the owning side of the relation if necessary
+//        if ($applications->getUser() !== $this) {
+//            $applications->setUser($this);
+//        }
+//
+//        $this->applications = $applications;
+//
+//        return $this;
+//    }
+
 }
+
