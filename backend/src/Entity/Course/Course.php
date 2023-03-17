@@ -5,7 +5,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Applications\applications;
 use App\Entity\Feedback\Feedback;
 use App\Entity\Goals\Goal;
-use App\Entity\Pack\pack;
+use App\Entity\pack\pack;
 use App\Entity\Teachers\Teachers;
 use App\Entity\User\User;
 use DateTimeInterface;
