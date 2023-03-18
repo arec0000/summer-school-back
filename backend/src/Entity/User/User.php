@@ -3,6 +3,8 @@
 namespace App\Entity\User;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use App\Controller\User\RegistrationUserController;
 use App\Entity\Applications\applications;
 use App\Entity\Course\Course;
 use App\Entity\Feedback\Feedback;
@@ -11,12 +13,23 @@ use App\Entity\Teachers\Teachers;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface as PasswordAuthenticatedUserInterfaceAlias;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 //Аннотации для того чтобы сущность появилась в swagger и также была таблицей в бд
-#[ApiResource]
+#[ApiResource(
+    operations: [
+    new Post
+    (uriTemplate: '/user/register',
+        controller: RegistrationUserController::class,
+        deserialize: false,
+        name: "RegistrationUser")
+        ]
+)]
 #[ORM\Entity]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
 {
     // Аннотации для того чтобы свойство класса стало атрибутом в бд
     // для того чтобы создать бд нужно заполнить .env параметр DATABASE_URL
@@ -27,12 +40,14 @@ class User
     //TODO сделать абстрактный класс BaseEntity, от которого будут наследоваться все остальные. В нем собрать все поля по умолчанию
     // id, dateCreate, dateUpdate
 
-    public function __construct()
+
+    public function __construct(string $password)
     {
         $this->goals = new ArrayCollection();
         $this->feedback = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->teachers = new ArrayCollection();
+        $this->password = $password;
     }
 
     #[ORM\Id]
@@ -40,21 +55,24 @@ class User
     #[ORM\GeneratedValue(strategy: "AUTO")]
     protected int $id;
 
-    #[ORM\Column(type: "string",length: 255)]
+    #[ORM\Column(type: "string", length: 255)]
     public string $name;
 
     // обязательные поля в базе данных, и соответственно необходимые поля для создания пишутся так.
-    #[ORM\Column(type: "string",length: 255)]
+    #[ORM\Column(type: "string", length: 255)]
     public string $surname;
 
     // необязательные поля, зануляются по умолчанию в бд и в коде вот так.
-    #[ORM\Column(type: "string",length: 255, nullable: true)]
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     public ?string $patronymic = null;
 
-    #[ORM\Column(type: "integer",length: 10, nullable: true)]
+    #[ORM\Column(type: "integer", length: 10, nullable: true)]
     public ?int $age = null;
 
-    #[ORM\Column(type: "string", nullable: true)]
+    #[ORM\Column(type: "string", unique: true)]
+    #[Assert\Email(
+        message: 'Email {{ value }} не является валидным email.',
+    )]
     public ?string $email = null;
 
     #[ORM\Column(type: "string", nullable: true)]
@@ -77,6 +95,8 @@ class User
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?applications $applications = null;
+    #[ORM\Column(type: "array") ]
+    private array $roles = ["ROLE_USER","ROLE_ADMIN"];
 
     // TODO добавить поле role, когда будет таска на авторизацию
 
@@ -90,11 +110,6 @@ class User
     public function setPassword(string $password): void
     {
         $this->password = $password;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     /**
@@ -200,18 +215,7 @@ class User
     {
         return $this->goals;
     }
-// строки ниже законспектированны для того чтобы программа работала корректно, но сами функции я сохранил на всякий случай
-// и во всех последующих моделях ситуация аналогичная
 
-//    public function addGoal(Goal $goal): self
-//    {
-//        if (!$this->goals->contains($goal)) {
-//            $this->goals->add($goal);
-//            $goal->setUser($this);
-//        }
-//
-//        return $this;
-//    }
     /**
      * @return Collection<int, Feedback>
      */
@@ -220,15 +224,6 @@ class User
         return $this->feedback;
     }
 
-//    public function addFeedback(Feedback $feedback): self
-//    {
-//        if (!$this->feedback->contains($feedback)) {
-//            $this->feedback->add($feedback);
-//            $feedback->setUser($this);
-//        }
-//
-//        return $this;
-//    }
     /**
      * @return Collection<int, Course>
      */
@@ -236,16 +231,6 @@ class User
     {
         return $this->courses;
     }
-
-//    public function addCourse(Course $course): self
-//    {
-//        if (!$this->courses->contains($course)) {
-//            $this->courses->add($course);
-//            $course->addUser($this);
-//        }
-//
-//        return $this;
-//    }
     /**
      * @return Collection<int, Teachers>
      */
@@ -254,32 +239,27 @@ class User
         return $this->teachers;
     }
 
-//    public function addTeacher(Teachers $teacher): self
-//    {
-//        if (!$this->teachers->contains($teacher)) {
-//            $this->teachers->add($teacher);
-//            $teacher->addUser($this);
-//        }
-//
-//        return $this;
-//    }
-
     public function getApplications(): ?applications
     {
         return $this->applications;
     }
 
-//    public function setApplications(applications $applications): self
-//    {
-//        // set the owning side of the relation if necessary
-//        if ($applications->getUser() !== $this) {
-//            $applications->setUser($this);
-//        }
-//
-//        $this->applications = $applications;
-//
-//        return $this;
-//    }
+    public function getRoles(): array
+    {
+        // TODO: Implement getRoles() method.
+        return $this->roles;
+    }
 
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUserIdentifier(): string
+    {
+        // TODO: Implement getUserIdentifier() method.
+        return $this->id;
+    }
 }
+
 
