@@ -188,13 +188,4 @@ fabric.properties
 /vendor/
 .idea
 .DS_Store
-/config/public.key
-/config/private.key
 ###< symfony/framework-bundle ###
-
-###> league/oauth2-server-bundle ###
-/config/jwt/*.pem
-###< league/oauth2-server-bundle ###
-
-mysql
-.dockerEnv

@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 
 // pack means group of people or just group
-class pack
+class Pack
 {
     #[ORM\Id]
     #[ORM\Column(type: "integer", nullable: true)]
