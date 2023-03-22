@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity\Applications;
+
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Course\Course;
 use App\Entity\User\User;
@@ -9,7 +10,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ApiResource]
 #[ORM\Entity]
-class applications
+class Applications
 {
     /**
      * @var int|null The id of course

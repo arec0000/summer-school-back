@@ -10,7 +10,7 @@ use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
 #[ORM\Entity]
-class lesson
+class Lesson
 {
     #[ORM\Id]
     #[ORM\Column(type: "integer",nullable: true)]
