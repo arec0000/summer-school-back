@@ -8,6 +8,7 @@ use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity]
@@ -20,27 +21,52 @@ class Teachers
     }
 
     /** @var int|null The id for teachers */
+
     #[ORM\Id]
     #[ORM\Column(type: "integer", nullable: true)]
     #[ORM\GeneratedValue(strategy: "AUTO")]
     private ?int $id = null;
 
     #[ORM\Column(type: "string",length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Ваше имя не может содержать цифру',
+        match: false,
+    )]
     public string $name;
 
     #[ORM\Column(type: "string",length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Ваша фамилия не может содержать цифру',
+        match: false,
+    )]
     public string $surname;
 
     #[ORM\Column(type: "string",length: 255,nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Ваше отчество не может содержать цифру',
+        match: false,
+    )]
     public ?string $patronymic = null;
 
     #[ORM\Column(type: "integer",length: 10 ,nullable: true)]
+    #[Assert\NotBlank]
     public ?int $age = null;
 
-    #[ORM\Column(type: "string", nullable: true)]
+    #[ORM\Column(type: "string", unique: true)]
+    #[Assert\Email(
+        message: 'Email {{ value }} не является валидным email.',
+    )]
+    #[Assert\NotBlank]
     public ?string $email = null;
 
     #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\NotBlank]
     public ?string $phone = null;
 
     #[ORM\ManyToMany(targetEntity: Course::class, inversedBy: 'teachers')]

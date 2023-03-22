@@ -56,29 +56,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
     protected int $id;
 
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Ваше имя не может содержать цифру',
+        match: false,
+    )]
     public string $name;
 
     // обязательные поля в базе данных, и соответственно необходимые поля для создания пишутся так.
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Ваша фамилия не может содержать цифру',
+        match: false,
+    )]
     public string $surname;
 
     // необязательные поля, зануляются по умолчанию в бд и в коде вот так.
     #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Ваше отчество не может содержать цифру',
+        match: false,
+    )]
     public ?string $patronymic = null;
 
     #[ORM\Column(type: "integer", length: 10, nullable: true)]
+    #[Assert\NotBlank]
     public ?int $age = null;
 
     #[ORM\Column(type: "string", unique: true)]
     #[Assert\Email(
         message: 'Email {{ value }} не является валидным email.',
     )]
+    #[Assert\NotBlank]
     public ?string $email = null;
 
     #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\NotBlank]
     public ?string $phone = null;
 
     #[ORM\Column(type: "string",)]
+    #[Assert\NotBlank]
     private string $password;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Goal::class)]

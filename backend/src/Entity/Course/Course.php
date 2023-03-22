@@ -53,6 +53,7 @@ class Course
 
     /** @var string|null picture for course */
     #[ORM\Column(type: "string",length: 255)]
+    #[Assert\NotBlank]
     private ?string $thumbnail =null;
 
     /** @var int|null the studentCapacity of course */
@@ -62,7 +63,9 @@ class Course
 
 
     /** @var DateTimeInterface|null Star Date of course */
-    #[ORM\Column(type: "datetime")]
+    #[Assert\Date(
+        message: 'startTime {{ value }} не является валидным startTime.'
+    )]
     #[Assert\NotBlank]
     private ?DateTimeInterface $startTime = null;
 

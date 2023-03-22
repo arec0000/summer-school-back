@@ -26,17 +26,26 @@ class Lesson
     private ?string $description = null;
 
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank]
     private ?string $topic = null;
 
-    #[ORM\Column(type: "datetime")]
     #[Assert\NotBlank]
+    #[Assert\Date(
+        message: 'date {{ value }} не является валидным date.'
+    )]
     private ?DateTimeInterface $date = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private ?DateTimeInterface $start_time = null;
+    #[Assert\Time(
+        message: 'start_time {{ value }} не является валидным start_time.'
+    )]
+    #[Assert\NotBlank]
+    private ?DateTimeInterface $startTime = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
-    private ?DateTimeInterface $end_time = null;
+    #[Assert\Time(
+        message: 'end_time {{ value }} не является валидным end_time.'
+    )]
+    #[Assert\NotBlank]
+    private ?DateTimeInterface $endTime = null;
 
     #[ORM\ManyToOne(inversedBy: 'lessons')]
     #[ORM\JoinColumn(nullable: false)]
@@ -120,15 +129,15 @@ class Lesson
      */
     public function getStartTime(): ?DateTimeInterface
     {
-        return $this->start_time;
+        return $this->startTime;
     }
 
     /**
-     * @param DateTimeInterface|null $start_time
+     * @param DateTimeInterface|null $startTime
      */
-    public function setStartTime(?DateTimeInterface $start_time): void
+    public function setStartTime(?DateTimeInterface $startTime): void
     {
-        $this->start_time = $start_time;
+        $this->startTime = $startTime;
     }
 
     /**
@@ -136,16 +145,17 @@ class Lesson
      */
     public function getEndTime(): ?DateTimeInterface
     {
-        return $this->end_time;
+        return $this->endTime;
     }
 
     /**
-     * @param DateTimeInterface|null $end_time
+     * @param DateTimeInterface|null $endTime
      */
-    public function setEndTime(?DateTimeInterface $end_time): void
+    public function setEndTime(?DateTimeInterface $endTime): void
     {
-        $this->end_time = $end_time;
+        $this->endTime = $endTime;
     }
+
 
     public function getPack(): ?pack
     {
