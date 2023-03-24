@@ -5,7 +5,7 @@ namespace App\Entity\User;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use App\Controller\User\RegistrationUserController;
-use App\Entity\Applications\applications;
+use App\Entity\Applications\Applications;
 use App\Entity\Course\Course;
 use App\Entity\Feedback\Feedback;
 use App\Entity\Goals\Goal;
@@ -13,41 +13,35 @@ use App\Entity\Teachers\Teachers;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface as PasswordAuthenticatedUserInterfaceAlias;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 
 //Аннотации для того чтобы сущность появилась в swagger и также была таблицей в бд
-#[ApiResource(
-    operations: [
+#[ApiResource(operations: [
     new Post
     (uriTemplate: '/user/register',
         controller: RegistrationUserController::class,
+        denormalizationContext: ['groups' => 'createUser'],
         deserialize: false,
         name: "RegistrationUser")
-        ]
-)]
+
+        ])]
+
 #[ORM\Entity]
-class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
+
+class User implements  UserInterface,PasswordAuthenticatedUserInterface
 {
-    // Аннотации для того чтобы свойство класса стало атрибутом в бд
-    // для того чтобы создать бд нужно заполнить .env параметр DATABASE_URL
-    // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
-    // bin/console d:d:c && bin/console d:s:u --force --dump-sql
-    // развернуть проект можно используя symfony serve -d
-
-    //TODO сделать абстрактный класс BaseEntity, от которого будут наследоваться все остальные. В нем собрать все поля по умолчанию
-    // id, dateCreate, dateUpdate
-
-
-    public function __construct(string $password)
+    public function __construct()
     {
         $this->goals = new ArrayCollection();
         $this->feedback = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->teachers = new ArrayCollection();
-        $this->password = $password;
     }
 
     #[ORM\Id]
@@ -56,30 +50,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
     protected int $id;
 
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank]
+    #[Groups('createUser')]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Ваше имя не может содержать цифру',
+        match: false,
+    )]
     public string $name;
 
     // обязательные поля в базе данных, и соответственно необходимые поля для создания пишутся так.
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank]
+    #[Groups('createUser')]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Ваша фамилия не может содержать цифру',
+        match: false,
+    )]
     public string $surname;
 
     // необязательные поля, зануляются по умолчанию в бд и в коде вот так.
     #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Groups('createUser')]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        message: 'Ваше отчество не может содержать цифру',
+        match: false,
+    )]
     public ?string $patronymic = null;
 
     #[ORM\Column(type: "integer", length: 10, nullable: true)]
+    #[Assert\NotBlank]
+    #[Groups('createUser')]
     public ?int $age = null;
 
     #[ORM\Column(type: "string", unique: true)]
+    #[Groups('createUser')]
     #[Assert\Email(
         message: 'Email {{ value }} не является валидным email.',
     )]
+    #[Assert\NotBlank]
     public ?string $email = null;
 
     #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\NotBlank]
+    #[Groups('createUser')]
     public ?string $phone = null;
 
     #[ORM\Column(type: "string",)]
-    private string $password;
+    #[Assert\NotBlank]
+    #[Groups('createUser')]
+    public ?string $password = null ;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Goal::class)]
     private Collection $goals;
@@ -95,10 +118,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?applications $applications = null;
-    #[ORM\Column(type: "array") ]
-    private array $roles = ["ROLE_USER","ROLE_ADMIN"];
 
-    // TODO добавить поле role, когда будет таска на авторизацию
+    #[ORM\Column(type: "array") ]
+    public array $roles = [];
 
     // Методы пишем после свойств. Поля пароля и айди приватные по умолчанию
     // для них нужны гетеры и сетеры, функции которые позволяют получать приватные свойства из объекта класса.
@@ -244,11 +266,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
         return $this->applications;
     }
 
+
     public function getRoles(): array
     {
         // TODO: Implement getRoles() method.
         return $this->roles;
     }
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
+    }
+
+
+
 
     public function eraseCredentials()
     {
@@ -258,7 +292,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
     public function getUserIdentifier(): string
     {
         // TODO: Implement getUserIdentifier() method.
-        return $this->id;
+        return $this->email;
     }
 }
 

@@ -4,10 +4,10 @@ api_platform:
     enabled: true
 
     # The OAuth client ID.
-    clientId: ''
+    clientId: 'dcac236605196772f81c877f62f13467'
 
     # The OAuth client secret.
-    clientSecret: ''
+    clientSecret: 'f16ceeab3f0d269473e7e9010faea54daaac02a85dc4512fe1443dbeb6ce02123b090c1adb7b41ffd3252972183b2125dc6c887ac6cb7f2953e1c181c12b3bc8'
 
     # The OAuth type.
     type: 'oauth2'

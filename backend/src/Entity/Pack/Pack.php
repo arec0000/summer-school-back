@@ -24,8 +24,10 @@ class Pack
     #[Assert\NotBlank]
     private ?string $packName= null;
 
-    #[ORM\Column(type: "string")]
     #[Assert\NotBlank]
+    #[Assert\Url(
+        message: 'Url {{ value }} не является валидным url',
+    )]
     private ?string $calendar_url=null;
 
     #[ORM\OneToMany(mappedBy: 'pack', targetEntity: lesson::class)]

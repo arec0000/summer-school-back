@@ -20,6 +20,10 @@ services:
       APP_SECRET: ${APP_SECRET}
       DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@database:3306/${MYSQL_DATABASE}?serverVersion=8&charset=utf8mb4"
       CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN}
+      OAUTH_PRIVATE_KEY: ${OAUTH_PRIVATE_KEY}
+      OAUTH_PUBLIC_KEY: ${OAUTH_PUBLIC_KEY}
+      OAUTH_PASSPHRASE: ${OAUTH_PASSPHRASE}
+      OAUTH_ENCRYPTION_KEY: ${OAUTH_ENCRYPTION_KEY}
     volumes:
       - ./backend/:/var/www/project
     depends_on:
@@ -28,6 +32,8 @@ services:
   database:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3305:3306
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}

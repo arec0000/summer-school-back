@@ -188,4 +188,6 @@ fabric.properties
 /vendor/
 .idea
 .DS_Store
+/config/private.key
+/config/public.key
 ###< symfony/framework-bundle ###
