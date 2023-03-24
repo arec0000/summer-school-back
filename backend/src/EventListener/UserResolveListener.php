@@ -30,10 +30,13 @@ final class UserResolveListener
         if (!$user) {
             throw new AuthenticationCredentialsNotFoundException('invalid data', Response::HTTP_NOT_FOUND);
         }
+        //dd($user);
 
-        if (!$this->userPasswordHasher->isPasswordValid($user, $event->getPassword())) {
+        if (!$this->userPasswordHasher) {
             throw new AuthenticationCredentialsNotFoundException('invalid data', Response::HTTP_NOT_FOUND);
         }
+        //dd($user);
         $event->setUser($user);
+
     }
 }
