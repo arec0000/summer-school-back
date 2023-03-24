@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Course\Course;
 use App\Entity\User\User;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity]
@@ -21,7 +21,7 @@ class Applications
     private ?int $Id = null;
 
     #[ORM\Column(type: "string")]
-    #[NotBlank]
+    #[Assert\NotBlank]
     private ?string $status = null;
 
     #[ORM\OneToOne(inversedBy: 'applications', cascade: ['persist', 'remove'])]

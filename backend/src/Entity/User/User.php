@@ -5,7 +5,7 @@ namespace App\Entity\User;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use App\Controller\User\RegistrationUserController;
-use App\Entity\Applications\applications;
+use App\Entity\Applications\Applications;
 use App\Entity\Course\Course;
 use App\Entity\Feedback\Feedback;
 use App\Entity\Goals\Goal;
@@ -19,28 +19,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 //Аннотации для того чтобы сущность появилась в swagger и также была таблицей в бд
-#[ApiResource(
-    operations: [
+#[ApiResource(operations: [
     new Post
     (uriTemplate: '/user/register',
         controller: RegistrationUserController::class,
+        denormalizationContext: ['groups' => 'createUser'],
         deserialize: false,
         name: "RegistrationUser")
-        ]
-)]
+
+        ])]
+
 #[ORM\Entity]
-class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    // Аннотации для того чтобы свойство класса стало атрибутом в бд
-    // для того чтобы создать бд нужно заполнить .env параметр DATABASE_URL
-    // после настройки, чтобы перевести эту сущность в таблицу в бд нужно через консоль выполнять следующее:
-    // bin/console d:d:c && bin/console d:s:u --force --dump-sql
-    // развернуть проект можно используя symfony serve -d
-
-    //TODO сделать абстрактный класс BaseEntity, от которого будут наследоваться все остальные. В нем собрать все поля по умолчанию
-    // id, dateCreate, dateUpdate
-
-
     public function __construct(string $password)
     {
         $this->goals = new ArrayCollection();
@@ -101,7 +92,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
 
     #[ORM\Column(type: "string",)]
     #[Assert\NotBlank]
-    private string $password;
+    private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Goal::class)]
     private Collection $goals;
@@ -117,10 +108,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?applications $applications = null;
+
     #[ORM\Column(type: "array") ]
     private array $roles = ["ROLE_USER","ROLE_ADMIN"];
-
-    // TODO добавить поле role, когда будет таска на авторизацию
 
     // Методы пишем после свойств. Поля пароля и айди приватные по умолчанию
     // для них нужны гетеры и сетеры, функции которые позволяют получать приватные свойства из объекта класса.
@@ -280,7 +270,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterfaceAlias
     public function getUserIdentifier(): string
     {
         // TODO: Implement getUserIdentifier() method.
-        return $this->id;
+        return $this->email;
     }
 }
 
