@@ -17,7 +17,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /** information about course */
 #[ORM\Entity]
-#[ApiResource]
+#[ApiResource(operations: [
+    new Get(
+        name: 'Course',
+        uriTemplate: '/Course',
+        controller: CourseController::class
+    )
+])]
+
 class Course
 {
     public function __construct()
