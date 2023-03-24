@@ -8,26 +8,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Encoder\JsonDecode;
 
 class RegistrationUserController extends AbstractController
 {
     public function __construct
     (
-        private EntityManagerInterface $entityManager,
-        private UserPasswordHasherInterface $hasher
+        private EntityManagerInterface      $entityManager,
+        private UserPasswordHasherInterface $hasher,
+
     )
     {
 
     }
-    public function __invoke(User $user): JsonResponse
+
+    public function __invoke(Request $request) //User $user): JsonResponse
 
     {
-        //это магический метод, но чем-то схож с инитом
-        // как аргумент в invoke всегда передается request
-        // валидация данных
-        // тут надо добавить управление ролями
-        $hashPassword = $this->hasher -> hashPassword($user, $user->getPassword());
+
+        $data = json_decode($request->getContent());
+
+        $user = new User();
+        $user->email = $data->email;
+
+        $user->name = $data->name;
+        $user->surname = $data->surname;
+        $user->patronymic = $data->patronymic;
+        $user->phone = $data->phone;
+        $user->age = $data->age;
+        $user->password = $data->password;
+
+        $hashPassword = $this->hasher->hashPassword($user, $user->getPassword());
         $user->setPassword($hashPassword);
+
+        $user->setRoles(["ROLE_USER"]);
+
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 

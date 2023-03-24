@@ -29,6 +29,7 @@ services:
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
+
     App\Controller\:
         resource: '../src/Controller/'
         tags: [ 'controller.service_arguments' ]
@@ -36,7 +37,8 @@ services:
     App\Services\User\UserRegistrationService:
         autowire: true
 
-    App\Entity\User\User: ~
+    App\Entity\User\User:
+        autowire: false
 
     App\EventListener\UserResolveListener:
         tags:

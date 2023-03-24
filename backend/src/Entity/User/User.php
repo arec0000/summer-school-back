@@ -13,9 +13,12 @@ use App\Entity\Teachers\Teachers;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface as PasswordAuthenticatedUserInterfaceAlias;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 
 //Аннотации для того чтобы сущность появилась в swagger и также была таблицей в бд
@@ -30,15 +33,15 @@ use Symfony\Component\Validator\Constraints as Assert;
         ])]
 
 #[ORM\Entity]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+
+class User implements  UserInterface,PasswordAuthenticatedUserInterface
 {
-    public function __construct(string $password)
+    public function __construct()
     {
         $this->goals = new ArrayCollection();
         $this->feedback = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->teachers = new ArrayCollection();
-        $this->password = $password;
     }
 
     #[ORM\Id]
@@ -48,6 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
+    #[Groups('createUser')]
     #[Assert\Regex(
         pattern: '/\d/',
         message: 'Ваше имя не может содержать цифру',
@@ -58,6 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // обязательные поля в базе данных, и соответственно необходимые поля для создания пишутся так.
     #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
+    #[Groups('createUser')]
     #[Assert\Regex(
         pattern: '/\d/',
         message: 'Ваша фамилия не может содержать цифру',
@@ -68,6 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // необязательные поля, зануляются по умолчанию в бд и в коде вот так.
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups('createUser')]
     #[Assert\Regex(
         pattern: '/\d/',
         message: 'Ваше отчество не может содержать цифру',
@@ -77,9 +83,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: "integer", length: 10, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups('createUser')]
     public ?int $age = null;
 
     #[ORM\Column(type: "string", unique: true)]
+    #[Groups('createUser')]
     #[Assert\Email(
         message: 'Email {{ value }} не является валидным email.',
     )]
@@ -88,11 +96,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: "string", nullable: true)]
     #[Assert\NotBlank]
+    #[Groups('createUser')]
     public ?string $phone = null;
 
     #[ORM\Column(type: "string",)]
     #[Assert\NotBlank]
-    private ?string $password = null;
+    #[Groups('createUser')]
+    public ?string $password = null ;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Goal::class)]
     private Collection $goals;
@@ -110,7 +120,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?applications $applications = null;
 
     #[ORM\Column(type: "array") ]
-    private array $roles = ["ROLE_USER","ROLE_ADMIN"];
+    public array $roles = [];
 
     // Методы пишем после свойств. Поля пароля и айди приватные по умолчанию
     // для них нужны гетеры и сетеры, функции которые позволяют получать приватные свойства из объекта класса.
@@ -256,11 +266,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->applications;
     }
 
+
     public function getRoles(): array
     {
         // TODO: Implement getRoles() method.
         return $this->roles;
     }
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
+    }
+
+
+
 
     public function eraseCredentials()
     {

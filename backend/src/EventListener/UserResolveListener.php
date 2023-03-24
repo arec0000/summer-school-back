@@ -2,13 +2,10 @@
 
 namespace App\EventListener;
 
+use App\Entity\User\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Nyholm\Psr7\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use League\Bundle\OAuth2ServerBundle\Event\UserResolveEvent;
 
 final class UserResolveListener
@@ -28,9 +25,9 @@ final class UserResolveListener
     public function onUserResolve(UserResolveEvent $event): void
     {
 
-        $user = $this->entityManager->getRepository(User::class) -> findOneBy(['email'=> $event -> getUsername()]);
 
-        if (!user) {
+        $user = $this->entityManager->getRepository(User::class) -> findOneBy(['email'=> $event -> getUsername()]);
+        if (!$user) {
             throw new AuthenticationCredentialsNotFoundException('invalid data', Response::HTTP_NOT_FOUND);
         }
 
