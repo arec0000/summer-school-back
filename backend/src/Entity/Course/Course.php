@@ -2,7 +2,7 @@
 
 namespace App\Entity\Course;
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Applications\applications;
+use App\Entity\Applications\Applications;
 use App\Entity\Feedback\Feedback;
 use App\Entity\Goals\Goal;
 use App\Entity\Pack\Pack;
@@ -62,12 +62,9 @@ class Course
     private ?int $studentCapacity = null;
 
 
-    /** @var DateTimeInterface|null Star Date of course */
-    #[Assert\Date(
-        message: 'startTime {{ value }} не является валидным startTime.'
-    )]
+    #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
-    private ?DateTimeInterface $startTime = null;
+    private ?string $startTime = null;
 
     /** @var string|null The duration of course */
     #[ORM\Column(type: "text")]
@@ -142,14 +139,13 @@ class Course
 
 
 
-    /** @return DateTimeInterface|null */
-    public function getStartTime(): ?DateTimeInterface
+    /** @return string|null */
+    public function getStartTime(): ?string
     {
         return $this->startTime;
     }
 
-    /** @param DateTimeInterface|null $startTime */
-    public function setStartTime(?DateTimeInterface $startTime): void
+    public function setStartTime(?string $startTime): void
     {
         $this->startTime = $startTime;
     }
