@@ -30,8 +30,8 @@ class RegistrationUserController extends AbstractController
         $data = json_decode($request->getContent());
 
         $user = new User();
-        $user->email = $data->email;
 
+        $user->email = $data->email;
         $user->name = $data->name;
         $user->surname = $data->surname;
         $user->patronymic = $data->patronymic;
