@@ -64,7 +64,7 @@ class Course
 
     #[ORM\Column(type: "string",length: 255)]
     #[Assert\NotBlank]
-    private ?DateTimeInterface $startTime = null;
+    private ?string $startTime = null;
 
     /** @var string|null The duration of course */
     #[ORM\Column(type: "text")]
@@ -139,7 +139,7 @@ class Course
 
 
 
-    /** @return DateTimeInterface|null */
+    /** @return string|null */
     public function getStartTime(): ?string
     {
         return $this->startTime;
