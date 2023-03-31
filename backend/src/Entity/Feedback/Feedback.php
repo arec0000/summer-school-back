@@ -7,8 +7,15 @@ use App\Entity\User\User;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource]
 #[ORM\Entity]
+#[ApiResource(operations: [
+    new Get(
+        name: 'Feedback',
+        uriTemplate: '/Feedback',
+        controller: FeedbackController::class
+    )
+])]
+
 /** Feedback for course */
 class Feedback
 {

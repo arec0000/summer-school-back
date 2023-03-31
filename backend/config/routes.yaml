@@ -6,3 +6,15 @@ controllers:
 oauth2:
     resource: '@LeagueOAuth2ServerBundle/Resources/config/routes.php'
     type: php
+
+app_feedback:
+    path: /feedback
+    controller: App\Controller\FeedbackController
+
+app_course:
+    path: /course
+    controller: App\Controller\CourseController
+
+app_goal:
+    path: /goal
+    controller: App\Controller\GoalsController
