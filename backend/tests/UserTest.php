@@ -13,7 +13,7 @@ class UserTest extends ApiTestCase
     /** @test */
     public function PostUserTest(): void
     {
-        UserFactory::createMany(20 );
+        UserFactory::createMany(2 );
 
         static::createClient()->request('POST', '/user');
 

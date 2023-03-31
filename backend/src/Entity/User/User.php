@@ -3,8 +3,12 @@
 namespace App\Entity\User;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Controller\User\RegistrationUserController;
 use App\Entity\Applications\Applications;
 use App\Entity\Course\Course;
@@ -26,8 +30,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
         controller: RegistrationUserController::class,
         denormalizationContext: ['groups' => 'createUser'],
         deserialize: false,
-        name: "RegistrationUser")
-        ],
+        name: "RegistrationUser"),
+//    new Get
+//    (uriTemplate: '/user/get/{id}',
+//        controller: GetUserController::class,
+//        name: 'GetUser'),
+//    Get::METHOD_GET,
+//    Delete::METHOD_DELETE,
+//    Patch::METHOD_PATCH,
+//    Put::METHOD_PUT,
+//    GetCollection::METHOD_GET
+]
+
 )]
 #[ORM\Entity]
 
@@ -98,7 +112,7 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "string",)]
     #[Assert\NotBlank]
     #[Groups('createUser')]
-    private ?string $password = null ;
+    private ?string $password  ;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Goal::class)]
     private Collection $goals;
@@ -290,6 +304,15 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
         // TODO: Implement getUserIdentifier() method.
         return $this->email;
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
 }
 
 
