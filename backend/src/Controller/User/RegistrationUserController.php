@@ -31,13 +31,13 @@ class RegistrationUserController extends AbstractController
 
         $user = new User();
 
-        $user->email = $data->email;
-        $user->name = $data->name;
-        $user->surname = $data->surname;
-        $user->patronymic = $data->patronymic;
-        $user->phone = $data->phone;
-        $user->age = $data->age;
-        $user->password = $data->password;
+        $user->setEmail($data->email);
+        $user->setName($data->name);
+        $user->setSurname($data->surname);
+        $user->setPatronymic($data->patronymic);
+        $user->setPhone($data->phone);
+        $user->setAge($data->age);
+        $user->setPassword($data->password);
 
         $hashPassword = $this->hasher->hashPassword($user, $user->getPassword());
         $user->setPassword($hashPassword);
