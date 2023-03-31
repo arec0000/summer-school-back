@@ -40,6 +40,28 @@ class News
     #[Assert\NotBlank]
     private ?DateTimeInterface $date = null;
 
+    /** @var string|null The URL of picture for news
+     */
+    #[Assert\NotBlank]
+    #[ORM\Column(type: "string",length: 255)]
+    private ?string $image = null;
+
+    /**
+     * @return string|null
+     */
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string|null $image
+     */
+    public function setImage(?string $image): void
+    {
+        $this->image = $image;
+    }
+
     /**
      * @return int|null
      */
@@ -47,7 +69,6 @@ class News
     {
         return $this->id;
     }
-
 
     /**
      * @return string|null
@@ -112,8 +133,5 @@ class News
     {
         $this->date = $date;
     }
-
-
-
 
 }
