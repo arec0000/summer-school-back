@@ -35,13 +35,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 //    (uriTemplate: '/user/get/{id}',
 //        controller: GetUserController::class,
 //        name: 'GetUser'),
-//    Get::METHOD_GET,
-//    Delete::METHOD_DELETE,
-//    Patch::METHOD_PATCH,
-//    Put::METHOD_PUT,
-//    GetCollection::METHOD_GET
+    new Get(),
+    new GetCollection(),
+    new Delete(),
+    new Put(),
+    new Patch()
 ]
-
 )]
 #[ORM\Entity]
 

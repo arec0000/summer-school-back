@@ -15,7 +15,7 @@ class UserTest extends ApiTestCase
     {
         UserFactory::createMany(2 );
 
-        static::createClient()->request('POST', '/user');
+        static::createClient()->request('GET', '/users');
 
 
         $this->assertResponseIsSuccessful();
