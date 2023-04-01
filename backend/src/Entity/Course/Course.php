@@ -61,8 +61,7 @@ class Course
     #[Assert\NotNull]
     private ?int $studentCapacity = null;
 
-
-    #[ORM\Column(type: "string",length: 255)]
+    #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
     private ?string $startTime = null;
 
