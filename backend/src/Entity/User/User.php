@@ -31,10 +31,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
         denormalizationContext: ['groups' => 'createUser'],
         deserialize: false,
         name: "RegistrationUser"),
-//    new Get
-//    (uriTemplate: '/user/get/{id}',
-//        controller: GetUserController::class,
-//        name: 'GetUser'),
     new Get(),
     new GetCollection(),
     new Delete(),
@@ -79,7 +75,6 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
     )]
     private string $surname;
 
-    // необязательные поля, зануляются по умолчанию в бд и в коде вот так.
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     #[Assert\NotBlank]
     #[Groups('createUser')]
@@ -131,8 +126,6 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "array") ]
     private array $roles = [];
 
-    // Методы пишем после свойств. Поля пароля и айди приватные по умолчанию
-    // для них нужны гетеры и сетеры, функции которые позволяют получать приватные свойства из объекта класса.
     public function getPassword(): string
     {
         return $this->password;
@@ -290,9 +283,6 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
         $this->roles = $roles;
     }
 
-
-
-
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
@@ -313,5 +303,3 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
     }
 
 }
-
-

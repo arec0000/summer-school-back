@@ -51,6 +51,7 @@ final class NewsFactory extends ModelFactory
             'description' => self::faker()->text(),
             'thumbnail' => self::faker()->text(255),
             'date' => self::faker()->dateTime(),
+            'image'=> self::faker()->text(100000)
         ];
     }
 

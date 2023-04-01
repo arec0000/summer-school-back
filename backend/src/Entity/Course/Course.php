@@ -137,8 +137,6 @@ class Course
         $this->studentCapacity = $studentCapacity;
     }
 
-
-
     /** @return string|null */
     public function getStartTime(): ?string
     {
@@ -178,22 +176,12 @@ class Course
         $this->thumbnail = $thumbnail;
     }
 
-
     /** @return Collection<int, Goal> */
     public function getGoals(): Collection
     {
         return $this->goals;
     }
 
-//    public function addGoal(Goal $goal): self
-//    {
-//        if (!$this->goals->contains($goal)) {
-//            $this->goals->add($goal);
-//            $goal->setCourse($this);
-//        }
-//
-//        return $this;
-//    }
 
     /** @return Collection<int, Feedback> */
     public function getFeedback(): Collection
@@ -201,31 +189,11 @@ class Course
         return $this->feedback;
     }
 
-//    public function addFeedback(Feedback $feedback): self
-//    {
-//        if (!$this->feedback->contains($feedback)) {
-//            $this->feedback->add($feedback);
-//            $feedback->setCourse($this);
-//        }
-//
-//        return $this;
-//    }
-
     /** @return Collection<int, Teachers> */
     public function getTeachers(): Collection
     {
         return $this->teachers;
     }
-
-//    public function addTeacher(Teachers $teacher): self
-//    {
-//        if (!$this->teachers->contains($teacher)) {
-//            $this->teachers->add($teacher);
-//            $teacher->addCourse($this);
-//        }
-//
-//        return $this;
-//    }
 
     /** @return Collection<int, User> */
     public function getUser(): Collection
@@ -233,50 +201,19 @@ class Course
         return $this->user;
     }
 
-//    public function addUser(User $user): self
-//    {
-//        if (!$this->user->contains($user)) {
-//            $this->user->add($user);
-//        }
-//
-//        return $this;
-//    }
-
     public function getApplications(): ?applications
     {
         return $this->applications;
     }
 
-//    public function setApplications(applications $applications): self
-//    {
-//        // set the owning side of the relation if necessary
-//        if ($applications->getCourse() !== $this) {
-//            $applications->setCourse($this);
-//        }
-//
-//        $this->applications = $applications;
-//
-//        return $this;
-//    }
+    /**
+    * @return Collection<int, pack>
+    */
+    public function getPack(): Collection
+    {
+        return $this->pack;
+    }
 
-//}
 
-/**
- * @return Collection<int, pack>
- */
-public function getPack(): Collection
-{
-    return $this->pack;
-}
-
-//public function addPack(pack $pack): self
-//{
-//    if (!$this->pack->contains($pack)) {
-//        $this->pack->add($pack);
-//        $pack->setCourse($this);
-//    }
-//
-//    return $this;
-//}
 
 }

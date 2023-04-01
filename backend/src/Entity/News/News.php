@@ -40,6 +40,9 @@ class News
     #[Assert\NotBlank]
     private ?DateTimeInterface $date = null;
 
+    #[ORM\Column(type: "string",length: 100000)]
+    private ?string $image = null;
+
     /**
      * @return int|null
      */
@@ -113,7 +116,19 @@ class News
         $this->date = $date;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
 
-
-
+    /**
+     * @param string|null $image
+     */
+    public function setImage(?string $image): void
+    {
+        $this->image = $image;
+    }
 }
