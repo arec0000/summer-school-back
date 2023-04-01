@@ -188,6 +188,15 @@ fabric.properties
 /vendor/
 .idea
 .DS_Store
-/config/private.key
-/config/public.key
+*.key
 ###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###

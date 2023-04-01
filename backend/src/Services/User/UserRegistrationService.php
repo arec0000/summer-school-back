@@ -13,6 +13,7 @@ class UserRegistrationService
 
     }
 
+
     public function hashPassword( PasswordAuthenticatedUserInterface $user, string $password): string
     {
         return  $this->hashed->hashPassword($user, $password);

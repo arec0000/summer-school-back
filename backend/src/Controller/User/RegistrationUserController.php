@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RegistrationUserController extends AbstractController
 {
@@ -17,6 +18,7 @@ class RegistrationUserController extends AbstractController
     (
         private EntityManagerInterface      $entityManager,
         private UserPasswordHasherInterface $hasher,
+        private  ValidatorInterface $validator,
 
     )
     {
@@ -26,18 +28,36 @@ class RegistrationUserController extends AbstractController
     public function __invoke(Request $request) //User $user): JsonResponse
 
     {
-
+        $user = new User();
         $data = json_decode($request->getContent());
 
-        $user = new User();
-        $user->email = $data->email;
+        if (isset($data->email)) {
+            $user->setEmail($data->email);
+        }
+        if (isset($data->name)) {
+            $user->setName($data->name);
+        }
+        if (isset($data->surname)) {
+            $user->setSurname($data->surname);
+        }
+        if (isset($data->patronymic)) {
+            $user->setPatronymic($data->patronymic);
+        }
+        if (isset($data->phone)) {
+            $user->setPhone($data->phone);
+        }
+        if (isset($data->age)) {
+            $user->setAge($data->age);
+        }
+        if (isset($data->password)) {
+            $user->setPassword($data->password);
+        }
 
-        $user->name = $data->name;
-        $user->surname = $data->surname;
-        $user->patronymic = $data->patronymic;
-        $user->phone = $data->phone;
-        $user->age = $data->age;
-        $user->password = $data->password;
+        $errors=$this ->validator->validate($user);
+        if (count($errors) > 0)
+        {
+            return new JsonResponse(['message'=>'No valid data'], 500);
+        }
 
         $hashPassword = $this->hasher->hashPassword($user, $user->getPassword());
         $user->setPassword($hashPassword);
@@ -46,7 +66,6 @@ class RegistrationUserController extends AbstractController
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-
         return new JsonResponse(['message' => 'OK'], Response::HTTP_CREATED);
 
     }

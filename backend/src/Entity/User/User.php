@@ -3,7 +3,12 @@
 namespace App\Entity\User;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Controller\User\RegistrationUserController;
 use App\Entity\Applications\Applications;
 use App\Entity\Course\Course;
@@ -17,21 +22,22 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-
-//Аннотации для того чтобы сущность появилась в swagger и также была таблицей в бд
 #[ApiResource(operations: [
     new Post
     (uriTemplate: '/user/register',
         controller: RegistrationUserController::class,
         denormalizationContext: ['groups' => 'createUser'],
         deserialize: false,
-        name: "RegistrationUser")
-
-        ])]
-
+        name: "RegistrationUser"),
+    new Get(),
+    new GetCollection(),
+    new Delete(),
+    new Put(),
+    new Patch()
+]
+)]
 #[ORM\Entity]
 
 class User implements  UserInterface,PasswordAuthenticatedUserInterface
@@ -57,9 +63,8 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
         message: 'Ваше имя не может содержать цифру',
         match: false,
     )]
-    public string $name;
+    private string $name;
 
-    // обязательные поля в базе данных, и соответственно необходимые поля для создания пишутся так.
     #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
     #[Groups('createUser')]
@@ -68,9 +73,8 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
         message: 'Ваша фамилия не может содержать цифру',
         match: false,
     )]
-    public string $surname;
+    private string $surname;
 
-    // необязательные поля, зануляются по умолчанию в бд и в коде вот так.
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     #[Assert\NotBlank]
     #[Groups('createUser')]
@@ -79,12 +83,12 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
         message: 'Ваше отчество не может содержать цифру',
         match: false,
     )]
-    public ?string $patronymic = null;
+    private ?string $patronymic = null;
 
     #[ORM\Column(type: "integer", length: 10, nullable: true)]
     #[Assert\NotBlank]
     #[Groups('createUser')]
-    public ?int $age = null;
+    private ?int $age = null;
 
     #[ORM\Column(type: "string", unique: true)]
     #[Groups('createUser')]
@@ -92,17 +96,17 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
         message: 'Email {{ value }} не является валидным email.',
     )]
     #[Assert\NotBlank]
-    public ?string $email = null;
+    private ?string $email = null;
 
     #[ORM\Column(type: "string", nullable: true)]
     #[Assert\NotBlank]
     #[Groups('createUser')]
-    public ?string $phone = null;
+    private ?string $phone = null;
 
     #[ORM\Column(type: "string",)]
     #[Assert\NotBlank]
     #[Groups('createUser')]
-    public ?string $password = null ;
+    private ?string $password  ;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Goal::class)]
     private Collection $goals;
@@ -120,10 +124,8 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
     private ?applications $applications = null;
 
     #[ORM\Column(type: "array") ]
-    public array $roles = [];
+    private array $roles = [];
 
-    // Методы пишем после свойств. Поля пароля и айди приватные по умолчанию
-    // для них нужны гетеры и сетеры, функции которые позволяют получать приватные свойства из объекта класса.
     public function getPassword(): string
     {
         return $this->password;
@@ -281,9 +283,6 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
         $this->roles = $roles;
     }
 
-
-
-
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
@@ -294,6 +293,13 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
         // TODO: Implement getUserIdentifier() method.
         return $this->email;
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
 }
-
-
