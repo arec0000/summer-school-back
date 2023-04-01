@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 #[ApiResource]
 #[ORM\Entity]
 class News
@@ -45,6 +46,28 @@ class News
     #[Assert\NotBlank]
     #[ORM\Column(type: "string",length: 255)]
     private ?string $image = null;
+
+    /**
+     * @var string|null
+     * @Groups({"api"})
+     */
+    private ?string $imageUrl = null;
+
+    /**
+     * @return string|null
+     */
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    /**
+     * @param string|null $imageUrl
+     */
+    public function setImageUrl(?string $imageUrl): void
+    {
+        $this->imageUrl = $imageUrl;
+    }
 
     /**
      * @return string|null
