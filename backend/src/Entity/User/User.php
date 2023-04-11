@@ -19,9 +19,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 
 #[ApiResource(operations: [
@@ -34,8 +34,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
     new Get(),
     new GetCollection(),
     new Delete(),
-    new Put(),
-    new Patch()
+    new Put(denormalizationContext: ['groups' => 'createUser']),
+    new Patch(denormalizationContext: ['groups' => 'createUser'])
 ]
 )]
 #[ORM\Entity]

@@ -1,13 +1,35 @@
 <?php
 
 namespace App\Entity\Feedback;
+
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\Controller\Feedback\RegistrarionFeedbackController;
 use App\Entity\Course\Course;
 use App\Entity\User\User;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource]
+#[ApiResource(operations: [
+    new Post
+    (uriTemplate: '/feedback/register',
+        controller: RegistrarionFeedbackController::class,
+        denormalizationContext: ['groups' => 'createFeedback'],
+        deserialize: false,
+        name: "RegistrationFeedback"),
+    new Get(),
+    new GetCollection(),
+    new Delete(),
+    new Put(),
+    new Patch()
+]
+)]
 #[ORM\Entity]
 /** Feedback for course */
 class Feedback
@@ -21,14 +43,17 @@ class Feedback
     /** @var string|null text */
     #[ORM\Column(type: "text")]
     #[Assert\NotBlank]
+    #[Groups('createFeedback')]
     private ?string $feedbackText = null;
 
     #[ORM\ManyToOne(targetEntity: Course::class,inversedBy: 'feedback')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('createFeedback')]
     private ?Course $course = null;
 
     #[ORM\ManyToOne(inversedBy: 'feedback')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('createFeedback')]
     private ?User $user = null;
 
     /**

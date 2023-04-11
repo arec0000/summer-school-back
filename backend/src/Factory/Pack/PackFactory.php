@@ -50,7 +50,7 @@ final class PackFactory extends ModelFactory
     {
         return [
             'packName' => self::faker()->text(255),
-            'calendar_url' => self::faker()->url(),
+            'calendarUrl' => self::faker()->url(),
             'course' => CourseFactory::createOne(),
             'lessons' => LessonFactory::createOne(),
         ];

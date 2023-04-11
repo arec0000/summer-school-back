@@ -1,14 +1,35 @@
 <?php
 
 namespace App\Entity\Lesson;
+
+use App\Controller\Lesson\RegistrationLessonController;
 use App\Entity\Pack\Pack;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use ApiPlatform\Metadata\ApiResource;
-
-#[ApiResource]
+#[ApiResource(operations: [
+    new Post
+    (uriTemplate: '/lesson/register',
+        controller: RegistrationLessonController::class,
+        denormalizationContext: ['groups' => 'createLesson'],
+        deserialize: false,
+        name: "RegistrationLesson"),
+    new Get(),
+    new GetCollection(),
+    new Delete(),
+    new Put(),
+    new Patch()
+]
+)]
 #[ORM\Entity]
 class Lesson
 {
@@ -19,36 +40,43 @@ class Lesson
 
     #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
+    #[Groups('createLesson')]
     private ?string $title = null;
 
     #[ORM\Column(type: "text")]
     #[Assert\NotBlank]
+    #[Groups('createLesson')]
     private ?string $description = null;
 
     #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
+    #[Groups('createLesson')]
     private ?string $topic = null;
 
     #[Assert\NotBlank]
     #[Assert\Date(
         message: 'date {{ value }} не является валидным date.'
     )]
+    #[Groups('createLesson')]
     private ?DateTimeInterface $date = null;
 
     #[Assert\Time(
         message: 'start_time {{ value }} не является валидным start_time.'
     )]
     #[Assert\NotBlank]
+    #[Groups('createLesson')]
     private ?DateTimeInterface $startTime = null;
 
     #[Assert\Time(
         message: 'end_time {{ value }} не является валидным end_time.'
     )]
+    #[Groups('createLesson')]
     #[Assert\NotBlank]
     private ?DateTimeInterface $endTime = null;
 
     #[ORM\ManyToOne(inversedBy: 'lessons')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('createLesson')]
     private ?pack $pack = null;
 
     /**

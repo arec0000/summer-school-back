@@ -2,12 +2,33 @@
 
 namespace App\Entity\Goals;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\Controller\Goal\RegistrationGoalController;
 use App\Entity\Course\Course;
 use App\Entity\User\User;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource]
+#[ApiResource(operations: [
+    new Post
+    (uriTemplate: '/goal/register',
+        controller: RegistrationGoalController::class,
+        denormalizationContext: ['groups' => 'createGoal'],
+        deserialize: false,
+        name: "RegistrationGoal"),
+    new Get(),
+    new GetCollection(),
+    new Delete(),
+    new Put(),
+    new Patch()
+]
+)]
 #[ORM\Entity]
 /** Goal on course */
 
@@ -22,15 +43,18 @@ class Goal
 
     #[ORM\Column(type: "text")]
     #[Assert\NotBlank]
+    #[Groups('createGoal')]
     private ?string $goalText = null;
 
 
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'Goals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('createGoal')]
     private ?Course $course = null;
 
     #[ORM\ManyToOne(inversedBy: 'goals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('createGoal')]
     private ?User $user = null;
 
     /**
