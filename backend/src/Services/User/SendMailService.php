@@ -30,7 +30,7 @@ class SendMailService
         $mail->addAddress($user);
 //        $mail->Subject = 'Reset Password';
 //        $mail->Body = 'Новый пароль:  ' . $password;
-        $mail->Subject = 'Регистрация на сайте Летней школы';
+        $mail->Subject = 'Registration to Summer School';
         $mail->Body = 'Вы зарегистрировались на сайте Летней школы, благодарим вас за присоединению к нашему проекту и надеемся что вы будете довольны результатом нашей работы.';
 
         if (!$mail->send()) {
