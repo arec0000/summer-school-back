@@ -2,13 +2,14 @@
 
 namespace App\Controller\Applications;
 
+
 use App\Entity\Applications\Applications;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 class RegistrationApplicationController extends AbstractController
 {
@@ -16,27 +17,22 @@ class RegistrationApplicationController extends AbstractController
     (
         private EntityManagerInterface $entityManager,
         private  ValidatorInterface $validator,
-
     )
     {
 
     }
-    public function __invoke(Request $request)
+
+    public function __invoke(Applications $applications, EntityManagerInterface $entityManager)
 
     {
-        $application = new Applications();
-        $data = json_decode($request->getContent());
-        $application->setStatus($data->status);
-        $application->setCourse($data->course);
-        $application->setUser($data->user);
 
-        $errors=$this ->validator->validate($application);
+        $errors=$this ->validator->validate($applications);
         if (count($errors) > 0)
         {
             return new JsonResponse(['message'=>'No valid data'], 500);
         }
 
-        $this->entityManager->persist($application);
+        $this->entityManager->persist($applications);
         $this->entityManager->flush();
         return new JsonResponse(['message' => 'Application created'], Response::HTTP_CREATED);
 

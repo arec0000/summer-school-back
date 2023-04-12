@@ -19,17 +19,9 @@ class RegistrarionFeedbackController extends AbstractController
     )
     {
     }
-    public function __invoke(Request $request)
+    public function __invoke(Feedback $feedback,Request $request)
 
     {
-        $feedback = new Feedback();
-        $data = json_decode($request->getContent());
-        $feedback->setFeedbackText($data->feedbackText);
-        $feedback->setCourse($data->course);
-        $feedback->setUser($data->user);
-
-
-
         $errors=$this ->validator->validate($feedback);
         if (count($errors) > 0)
         {

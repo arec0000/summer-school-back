@@ -21,7 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     (uriTemplate: '/feedback/register',
         controller: RegistrarionFeedbackController::class,
         denormalizationContext: ['groups' => 'createFeedback'],
-        deserialize: false,
         name: "RegistrationFeedback"),
     new Get(),
     new GetCollection(),
@@ -41,7 +40,7 @@ class Feedback
     private ?int $Id = null;
 
     /** @var string|null text */
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: "string", length: 10000)]
     #[Assert\NotBlank]
     #[Groups('createFeedback')]
     private ?string $feedbackText = null;

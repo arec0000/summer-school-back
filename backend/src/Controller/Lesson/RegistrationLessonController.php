@@ -20,19 +20,9 @@ class RegistrationLessonController extends AbstractController
     {
 
     }
-    public function __invoke(Request $request)
+    public function __invoke(Lesson $lesson, Request $request)
 
     {
-        $lesson = new Lesson();
-        $data = json_decode($request->getContent());
-        $lesson->setTitle($data->title);
-        $lesson->setDescription($data->description);
-        $lesson->setTopic($data->topic);
-        $lesson->setDate($data->date);
-        $lesson->setStartTime($data->startTime);
-        $lesson->setEndTime($data->endTime);
-        $lesson->setPack($data->pack);
-
 
         $errors=$this ->validator->validate($lesson);
         if (count($errors) > 0)

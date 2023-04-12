@@ -18,7 +18,6 @@ use App\Controller\News\RegistrationNewsController;
     new Post
     (uriTemplate: '/news/register ',
         controller: RegistrationNewsController::class,
-        deserialize: false,
         denormalizationContext: ['groups' => 'createNews'],
         name: 'RegistrationNews'),
     new Get(),

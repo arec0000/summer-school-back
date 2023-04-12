@@ -3,14 +3,33 @@
 namespace App\Entity\Teachers;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\Controller\Teacher\RegistrationTeacherController;
 use App\Entity\Course\Course;
 use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource]
+#[ApiResource(operations: [
+    new Post
+    (uriTemplate: '/teacher/register',
+        controller: RegistrationTeacherController::class,
+        name: "RegistrationTeacher"),
+    new Get(),
+    new GetCollection(),
+    new Delete(),
+    new Put(),
+    new Patch()
+]
+)]
 #[ORM\Entity]
 class Teachers
 {
@@ -34,7 +53,7 @@ class Teachers
         message: 'Ваше имя не может содержать цифру',
         match: false,
     )]
-    public string $name;
+    private string $name;
 
     #[ORM\Column(type: "string",length: 255)]
     #[Assert\NotBlank]
@@ -43,7 +62,7 @@ class Teachers
         message: 'Ваша фамилия не может содержать цифру',
         match: false,
     )]
-    public string $surname;
+    private string $surname;
 
     #[ORM\Column(type: "string",length: 255,nullable: true)]
     #[Assert\NotBlank]
@@ -52,22 +71,23 @@ class Teachers
         message: 'Ваше отчество не может содержать цифру',
         match: false,
     )]
-    public ?string $patronymic = null;
+    private ?string $patronymic = null;
 
     #[ORM\Column(type: "integer",length: 10 ,nullable: true)]
     #[Assert\NotBlank]
-    public ?int $age = null;
+    private ?int $age = null;
 
     #[ORM\Column(type: "string", unique: true)]
     #[Assert\Email(
         message: 'Email {{ value }} не является валидным email.',
     )]
     #[Assert\NotBlank]
-    public ?string $email = null;
+    private ?string $email = null;
 
-    #[ORM\Column(type: "string", nullable: true)]
+    #[ORM\Column(unique: true)]
     #[Assert\NotBlank]
-    public ?string $phone = null;
+    #[Assert\Regex(pattern: '/^((\+7|7|8)+([0-9]){10})$/')]
+    private ?string $phone = null;
 
     #[ORM\ManyToMany(targetEntity: Course::class, inversedBy: 'teachers')]
     #[ORM\JoinColumn(nullable: false)]
@@ -191,15 +211,6 @@ class Teachers
         return $this->course;
     }
 
-//    public function addCourse(Course $course): self
-//    {
-//        if (!$this->course->contains($course)) {
-//            $this->course->add($course);
-//        }
-//
-//        return $this;
-//    }
-
     /**
      * @return Collection<int, User>
      */
@@ -207,14 +218,5 @@ class Teachers
     {
         return $this->user;
     }
-
-//    public function addUser(User $user): self
-//    {
-//        if (!$this->user->contains($user)) {
-//            $this->user->add($user);
-//        }
-//
-//        return $this;
-//    }
 
 }

@@ -20,15 +20,9 @@ class RegistrationGoalController extends AbstractController
     )
     {
     }
-    public function __invoke(Request $request)
+    public function __invoke(Goal $goal, Request $request)
 
     {
-        $goal = new Goal();
-        $data = json_decode($request->getContent());
-        $goal->setGoalText($data->goalText);
-        $goal->setCourse($data->course);
-        $goal->setUser($data->user);
-
 
         $errors=$this ->validator->validate($goal);
         if (count($errors) > 0)

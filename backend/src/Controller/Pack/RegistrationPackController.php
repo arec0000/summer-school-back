@@ -20,15 +20,9 @@ class RegistrationPackController extends  AbstractController
     {
 
     }
-    public function __invoke(Request $request)
+    public function __invoke(Pack $pack, Request $request)
 
     {
-        $pack = new Pack();
-        $data = json_decode($request->getContent());
-        $pack->setPackName($data->packName);
-        $pack->setCalendarUrl($data->calendarUrl);
-        $pack->setCourse($data->course);
-
         $errors=$this ->validator->validate($pack);
         if (count($errors) > 0)
         {

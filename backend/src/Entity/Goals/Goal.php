@@ -20,7 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     (uriTemplate: '/goal/register',
         controller: RegistrationGoalController::class,
         denormalizationContext: ['groups' => 'createGoal'],
-        deserialize: false,
         name: "RegistrationGoal"),
     new Get(),
     new GetCollection(),
@@ -41,7 +40,7 @@ class Goal
     #[ORM\GeneratedValue(strategy: "AUTO")]
     private ?int $id = null;
 
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: "string", length: 10000)]
     #[Assert\NotBlank]
     #[Groups('createGoal')]
     private ?string $goalText = null;

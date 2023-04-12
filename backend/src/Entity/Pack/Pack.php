@@ -16,14 +16,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[ApiResource(operations: [
     new Post
     (uriTemplate: '/pack/register',
         controller: RegistrationPackController::class,
         denormalizationContext: ['groups' => 'createPack'],
-        deserialize: false,
         name: "RegistrationPack"),
     new Get(),
     new GetCollection(),

@@ -21,7 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     (uriTemplate: '/application/register',
         controller: RegistrationApplicationController::class,
         denormalizationContext: ['groups' => 'createApplication'],
-        deserialize: false,
         name: "RegistrationApplication"),
     new Get(),
     new GetCollection(),
@@ -41,20 +40,19 @@ class Applications
     #[ORM\Column(type: "integer", nullable: true)]
     private ?int $Id = null;
 
-    #[ORM\Column(type: "string")]
+
     #[Assert\NotBlank]
     #[Groups('createApplication')]
+    #[Assert\Choice(["1", "2","3"])]
     private ?string $status = null;
 
-    #[ORM\OneToOne(inversedBy: 'applications', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'application')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('createApplication')]
-    private ?Course $course = null;
-
-    #[ORM\OneToOne(inversedBy: 'applications', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups('createApplication')]
     private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'application')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Course $course = null;
 
     /**
      * @return int|null
@@ -63,31 +61,6 @@ class Applications
     {
         return $this->Id;
     }
-
-    public function getCourse(): ?Course
-    {
-        return $this->course;
-    }
-
-    public function setCourse(Course $course): self
-    {
-        $this->course = $course;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     /**
      * @return string|null
      */
@@ -104,5 +77,27 @@ class Applications
         $this->status = $status;
     }
 
+public function getUser(): ?User
+{
+    return $this->user;
+}
 
+public function setUser(?User $user): self
+{
+    $this->user = $user;
+
+    return $this;
+}
+
+public function getCourse(): ?Course
+{
+    return $this->course;
+}
+
+public function setCourse(?Course $course): self
+{
+    $this->course = $course;
+
+    return $this;
+}
 }

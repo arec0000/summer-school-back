@@ -30,7 +30,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     (uriTemplate: '/course/register',
         controller: RegistrationCourseController::class,
         denormalizationContext: ['groups' => 'createCourse'],
-        deserialize: false,
         name: "RegistrationCourse"),
     new Get(),
     new GetCollection(),
@@ -48,6 +47,7 @@ class Course
         $this->teachers = new ArrayCollection();
         $this->user = new ArrayCollection();
         $this->pack = new ArrayCollection();
+        $this->application = new ArrayCollection();
     }
 
     /**
@@ -93,7 +93,7 @@ class Course
     private ?string $startTime = null;
 
     /** @var string|null The duration of course */
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
     #[Groups('createCourse')]
     private ?string $duration = null;
@@ -110,11 +110,13 @@ class Course
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'course')]
     private Collection $user;
 
-    #[ORM\OneToOne(mappedBy: 'course', cascade: ['persist', 'remove'])]
-    private ?applications $applications = null;
 
     #[ORM\OneToMany(mappedBy: 'course', targetEntity: pack::class)]
     private Collection $pack;
+
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: Applications::class)]
+    private Collection $application;
+
 
     /** @return int|null */
     public function getId(): ?int
@@ -227,12 +229,6 @@ class Course
     {
         return $this->user;
     }
-
-    public function getApplications(): ?applications
-    {
-        return $this->applications;
-    }
-
     /**
     * @return Collection<int, pack>
     */
@@ -240,6 +236,22 @@ class Course
     {
         return $this->pack;
     }
+
+    /**
+     * @return Collection<int, Applications>
+     */
+//    public function getApplication(): Collection
+//    {
+//        return $this->application;
+//    }
+
+/**
+ * @return Collection<int, Applications>
+ */
+public function getApplication(): Collection
+{
+    return $this->application;
+}
 
 
 

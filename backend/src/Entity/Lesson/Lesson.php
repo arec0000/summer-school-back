@@ -21,7 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     (uriTemplate: '/lesson/register',
         controller: RegistrationLessonController::class,
         denormalizationContext: ['groups' => 'createLesson'],
-        deserialize: false,
         name: "RegistrationLesson"),
     new Get(),
     new GetCollection(),
@@ -43,7 +42,7 @@ class Lesson
     #[Groups('createLesson')]
     private ?string $title = null;
 
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: "string", length: 1000)]
     #[Assert\NotBlank]
     #[Groups('createLesson')]
     private ?string $description = null;
