@@ -30,6 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     (uriTemplate: '/course/register',
         controller: RegistrationCourseController::class,
         denormalizationContext: ['groups' => 'createCourse'],
+        deserialize: false,
         name: "RegistrationCourse"),
     new Get(),
     new GetCollection(),

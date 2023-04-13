@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     (uriTemplate: '/feedback/register',
         controller: RegistrarionFeedbackController::class,
         denormalizationContext: ['groups' => 'createFeedback'],
+        deserialize: false,
         name: "RegistrationFeedback"),
     new Get(),
     new GetCollection(),

@@ -198,3 +198,4 @@ fabric.properties
 
 mysql
 .dockerEnv
+/public/uploads/

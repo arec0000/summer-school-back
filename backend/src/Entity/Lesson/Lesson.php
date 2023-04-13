@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Entity\Teachers\Teachers;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -20,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Post
     (uriTemplate: '/lesson/register',
         controller: RegistrationLessonController::class,
+        deserialize: false,
         denormalizationContext: ['groups' => 'createLesson'],
         name: "RegistrationLesson"),
     new Get(),
@@ -77,6 +79,11 @@ class Lesson
     #[ORM\JoinColumn(nullable: false)]
     #[Groups('createLesson')]
     private ?pack $pack = null;
+
+    #[ORM\ManyToOne(inversedBy: 'lesson')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups('createLesson')]
+    private ?Teachers $teacher = null;
 
     /**
      * @return int|null
@@ -192,6 +199,18 @@ class Lesson
     public function setPack(?pack $pack): self
     {
         $this->pack = $pack;
+
+        return $this;
+    }
+
+    public function getTeacher(): ?Teachers
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?Teachers $teacher): self
+    {
+        $this->teacher = $teacher;
 
         return $this;
     }

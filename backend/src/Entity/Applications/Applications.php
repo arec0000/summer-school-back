@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Post
     (uriTemplate: '/application/register',
         controller: RegistrationApplicationController::class,
+        deserialize: false,
         denormalizationContext: ['groups' => 'createApplication'],
         name: "RegistrationApplication"),
     new Get(),

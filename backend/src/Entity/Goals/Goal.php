@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     (uriTemplate: '/goal/register',
         controller: RegistrationGoalController::class,
         denormalizationContext: ['groups' => 'createGoal'],
+        deserialize: false,
         name: "RegistrationGoal"),
     new Get(),
     new GetCollection(),

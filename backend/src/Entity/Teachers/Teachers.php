@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Teacher\RegistrationTeacherController;
 use App\Entity\Course\Course;
+use App\Entity\Lesson\Lesson;
 use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Post
     (uriTemplate: '/teacher/register',
         controller: RegistrationTeacherController::class,
+        deserialize: false,
         name: "RegistrationTeacher"),
     new Get(),
     new GetCollection(),
@@ -37,6 +39,7 @@ class Teachers
     {
         $this->course = new ArrayCollection();
         $this->user = new ArrayCollection();
+        $this->lesson = new ArrayCollection();
     }
 
     /** @var int|null The id for teachers */
@@ -95,6 +98,9 @@ class Teachers
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'teachers')]
     private Collection $user;
+
+    #[ORM\OneToMany(mappedBy: 'teacher', targetEntity: Lesson::class)]
+    private Collection $lesson;
 
     /**
      * @return int|null
@@ -218,5 +224,14 @@ class Teachers
     {
         return $this->user;
     }
+
+    /**
+     * @return Collection<int, Lesson>
+     */
+    public function getLesson(): Collection
+    {
+        return $this->lesson;
+    }
+
 
 }

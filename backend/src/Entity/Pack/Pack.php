@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     (uriTemplate: '/pack/register',
         controller: RegistrationPackController::class,
         denormalizationContext: ['groups' => 'createPack'],
+        deserialize: false,
         name: "RegistrationPack"),
     new Get(),
     new GetCollection(),
