@@ -32,17 +32,28 @@ class RegistrationUserController extends AbstractController
     {
         $user = new User();
         $data = json_decode($request->getContent());
-        $user->setEmail($data->email);
-        $user->setName($data->name);
-        $user->setSurname($data->surname);
-        $user->setPatronymic($data->patronymic);
-        $user->setPhone($data->phone);
-        $user->setAge($data->age);
-        $user->setPassword($data->password);
-        $hashPassword = $this->hasher->hashPassword($user, $user->getPassword());
-        $user->setPassword($hashPassword);
 
-        $user->setRoles(["ROLE_USER"]);
+        if (isset($data->email)) {
+            $user->setEmail($data->email);
+        }
+        if (isset($data->name)) {
+            $user->setName($data->name);
+        }
+        if (isset($data->surname)) {
+            $user->setSurname($data->surname);
+        }
+        if (isset($data->patronymic)) {
+            $user->setPatronymic($data->patronymic);
+        }
+        if (isset($data->phone)) {
+            $user->setPhone($data->phone);
+        }
+        if (isset($data->age)) {
+            $user->setAge($data->age);
+        }
+        if (isset($data->password)) {
+            $user->setPassword($data->password);
+        }
 
         $errors=$this ->validator->validate($user);
 //        $this->sendMailServis->send($user->getEmail(),$password);
@@ -51,7 +62,14 @@ class RegistrationUserController extends AbstractController
         {
             return new JsonResponse(['message'=>'No valid data'], 500);
         }
+        
         $this->sendMailService->send($user->getEmail());
+
+        $hashPassword = $this->hasher->hashPassword($user, $user->getPassword());
+        $user->setPassword($hashPassword);
+
+        $user->setRoles(["ROLE_USER"]);
+
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 

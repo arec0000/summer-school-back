@@ -188,8 +188,7 @@ fabric.properties
 /vendor/
 .idea
 .DS_Store
-/config/private.key
-/config/public.key
+*.key
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

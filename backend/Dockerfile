@@ -15,4 +15,4 @@ RUN apt update \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && curl -sS https://get.symfony.com/cli/installer | bash
 
-CMD chmod +x bin/console ; wait-for-it database:3306 -- bin/console doctrine:migrations:diff ; bin/console doctrine:migrations:migrate ; php-fpm
+CMD chmod +x bin/console ; wait-for-it database:3306 -- bin/console d:s:u --force ; bin/console league:oauth2-server:create-client --grant-type=password baseClient ; php-fpm

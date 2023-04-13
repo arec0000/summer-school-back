@@ -87,8 +87,7 @@ class Course
     #[Groups('createCourse')]
     private ?int $studentCapacity = null;
 
-
-    #[ORM\Column(type: "string",length: 255)]
+    #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
     #[Groups('createCourse')]
     private ?string $startTime = null;
