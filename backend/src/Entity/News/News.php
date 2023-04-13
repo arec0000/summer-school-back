@@ -2,12 +2,70 @@
 
 namespace App\Entity\News;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\Controller\News\RegistrationNewsController;
 
-#[ApiResource]
+
+
+#[ApiResource(operations: [
+    new GetCollection(),
+    new Delete(),
+    new Put(),
+    new Post(
+        controller: RegistrationNewsController::class,
+        deserialize: false,
+//        security: 'is_granted("ROLE_USER")',
+        normalizationContext: ['groups' => 'readNews'],
+        openapiContext: [
+            'requestBody' => [
+                'description' => 'Upload image',
+                'required' => true,
+                'content' => [
+                    'multipart/form-data' => [
+                        'schema' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'file' => [
+                                    'type' => 'string',
+                                    'format' => 'binary',
+                                    'description' => 'Upload the required image file'
+                                ],
+                                'description' => [
+                                    'type' => 'string',
+                                    'format' => 'string',
+                                    'description' => 'Some description'
+                                ],
+                                'title' => [
+                                    'type' => 'string',
+                                    'format' => 'string',
+                                    'description' => 'title of News'
+                                ],
+                                'thumbnail' => [
+                                    'type' => 'string',
+                                    'format' => 'string',
+                                    'description' => 'thumbnail of News'
+                                ],
+
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    )
+])]
+
 #[ORM\Entity]
 class News
 {
@@ -22,26 +80,54 @@ class News
      */
     #[Assert\NotBlank]
     #[ORM\Column(type: "string",length: 255)]
+    #[Groups("readNews")]
     private ?string $title = null;
 
     /**
      * @var string|null the description of course
      */
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: "string", length: 10000)]
     #[Assert\NotBlank]
+    #[Groups("readNews")]
     private ?string $description = null;
 
     /** @var string|null picture for course */
     #[ORM\Column(type: "string",length: 255)]
+    #[Groups("readNews")]
     private ?string $thumbnail =null;
 
     /** @var DateTimeInterface|null Star Date of course */
     #[ORM\Column(type: "datetime")]
+    #[Groups("readNews")]
     #[Assert\NotBlank]
     private ?DateTimeInterface $date = null;
 
-    #[ORM\Column(type: "string",length: 100000)]
-    private ?string $image = null;
+
+    #[Groups("readNews")]
+    private ?string  $file = null;
+
+    /**
+     * @return string|null
+     */
+    public function getFile(): ?string
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param string|null $file
+     */
+    public function setFile(?string $file): void
+    {
+        $this->file = $file;
+    }
+
+
+
+    /**
+     * @return string|null
+     */
+
 
     /**
      * @return int|null
@@ -119,16 +205,5 @@ class News
     /**
      * @return string|null
      */
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
 
-    /**
-     * @param string|null $image
-     */
-    public function setImage(?string $image): void
-    {
-        $this->image = $image;
-    }
 }

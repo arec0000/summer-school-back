@@ -1,23 +1,44 @@
 <?php
 
 namespace App\Entity\Course;
+
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\Controller\Course\RegistrationCourseController;
 use App\Entity\Applications\Applications;
 use App\Entity\Feedback\Feedback;
 use App\Entity\Goals\Goal;
 use App\Entity\Pack\Pack;
 use App\Entity\Teachers\Teachers;
 use App\Entity\User\User;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 /** information about course */
 #[ORM\Entity]
-#[ApiResource]
+#[ApiResource(operations: [
+    new Post
+    (uriTemplate: '/course/register',
+        controller: RegistrationCourseController::class,
+        denormalizationContext: ['groups' => 'createCourse'],
+        deserialize: false,
+        name: "RegistrationCourse"),
+    new Get(),
+    new GetCollection(),
+    new Delete(),
+    new Put(),
+    new Patch()
+]
+)]
 class Course
 {
     public function __construct()
@@ -27,6 +48,7 @@ class Course
         $this->teachers = new ArrayCollection();
         $this->user = new ArrayCollection();
         $this->pack = new ArrayCollection();
+        $this->application = new ArrayCollection();
     }
 
     /**
@@ -42,6 +64,7 @@ class Course
      */
     #[Assert\NotBlank]
     #[ORM\Column(type: "string",length: 255)]
+    #[Groups('createCourse')]
     private ?string $title = null;
 
     /**
@@ -49,25 +72,30 @@ class Course
      */
     #[ORM\Column(type: "text")]
     #[Assert\NotBlank]
+    #[Groups('createCourse')]
     private ?string $description = null;
 
     /** @var string|null picture for course */
     #[ORM\Column(type: "string",length: 255)]
     #[Assert\NotBlank]
+    #[Groups('createCourse')]
     private ?string $thumbnail =null;
 
     /** @var int|null the studentCapacity of course */
     #[ORM\Column(type: "integer")]
     #[Assert\NotNull]
+    #[Groups('createCourse')]
     private ?int $studentCapacity = null;
 
     #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
+    #[Groups('createCourse')]
     private ?string $startTime = null;
 
     /** @var string|null The duration of course */
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: "string", length: 255)]
     #[Assert\NotBlank]
+    #[Groups('createCourse')]
     private ?string $duration = null;
 
     #[ORM\OneToMany(mappedBy: 'course',targetEntity: Goal::class)]
@@ -82,11 +110,13 @@ class Course
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'course')]
     private Collection $user;
 
-    #[ORM\OneToOne(mappedBy: 'course', cascade: ['persist', 'remove'])]
-    private ?applications $applications = null;
 
     #[ORM\OneToMany(mappedBy: 'course', targetEntity: pack::class)]
     private Collection $pack;
+
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: Applications::class)]
+    private Collection $application;
+
 
     /** @return int|null */
     public function getId(): ?int
@@ -199,12 +229,6 @@ class Course
     {
         return $this->user;
     }
-
-    public function getApplications(): ?applications
-    {
-        return $this->applications;
-    }
-
     /**
     * @return Collection<int, pack>
     */
@@ -212,6 +236,22 @@ class Course
     {
         return $this->pack;
     }
+
+    /**
+     * @return Collection<int, Applications>
+     */
+//    public function getApplication(): Collection
+//    {
+//        return $this->application;
+//    }
+
+/**
+ * @return Collection<int, Applications>
+ */
+public function getApplication(): Collection
+{
+    return $this->application;
+}
 
 
 

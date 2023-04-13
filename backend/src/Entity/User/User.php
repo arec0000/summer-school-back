@@ -19,9 +19,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 
 #[ApiResource(operations: [
@@ -34,8 +34,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
     new Get(),
     new GetCollection(),
     new Delete(),
-    new Put(),
-    new Patch()
+    new Put(denormalizationContext: ['groups' => 'createUser']),
+    new Patch(denormalizationContext: ['groups' => 'createUser'])
 ]
 )]
 #[ORM\Entity]
@@ -48,6 +48,7 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
         $this->feedback = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->teachers = new ArrayCollection();
+        $this->application = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -98,9 +99,10 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     private ?string $email = null;
 
-    #[ORM\Column(type: "string", nullable: true)]
+    #[ORM\Column(unique: true)]
     #[Assert\NotBlank]
     #[Groups('createUser')]
+    #[Assert\Regex(pattern: '/^((\+7|7|8)+([0-9]){10})$/')]
     private ?string $phone = null;
 
     #[ORM\Column(type: "string",)]
@@ -120,11 +122,11 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Teachers::class, mappedBy: 'user')]
     private Collection $teachers;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?applications $applications = null;
-
     #[ORM\Column(type: "array") ]
     private array $roles = [];
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Applications::class)]
+    private Collection $application;
 
     public function getPassword(): string
     {
@@ -263,12 +265,6 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
         return $this->teachers;
     }
 
-    public function getApplications(): ?applications
-    {
-        return $this->applications;
-    }
-
-
     public function getRoles(): array
     {
         // TODO: Implement getRoles() method.
@@ -301,5 +297,13 @@ class User implements  UserInterface,PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
+
+/**
+ * @return Collection<int, Applications>
+ */
+public function getApplication(): Collection
+{
+    return $this->application;
+}
 
 }
