@@ -18,3 +18,8 @@ app_course:
 app_goal:
     path: /goal
     controller: App\Controller\GoalsController
+
+get_tests:
+    path: '/courses/{courseId}/tests'
+    controller: App\Controller\Course\TestController::getTests
+    methods: [ 'GET' ]
